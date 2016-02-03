@@ -5,6 +5,7 @@ import feign.Logger;
 import feign.codec.Decoder;
 import feign.jackson.JacksonDecoder;
 import lombok.Getter;
+import net.allenaz.nomad.v1.regions.RegionsApi;
 import net.allenaz.nomad.v1.status.StatusApi;
 
 public final class V1Client {
@@ -12,6 +13,7 @@ public final class V1Client {
     private final String agentAddress;
 
     public final StatusApi statusApi;
+    public final RegionsApi regionsApi;
 
     public V1Client(String agentHost, int agentPort) {
         this.agentAddress = agentHost + ":" + agentPort;
@@ -25,5 +27,10 @@ public final class V1Client {
                 //.logLevel(Logger.Level.BASIC)
                 .target(StatusApi.class, agentAddress);
                 ////////retrofit.create(StatusApi.class);
+
+        this.regionsApi = Feign.builder()
+                .decoder(decoder)
+                .logger(new Logger.ErrorLogger())
+                .target(RegionsApi.class, agentAddress);
     }
 }
