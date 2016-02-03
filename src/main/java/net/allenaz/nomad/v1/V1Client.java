@@ -13,16 +13,16 @@ public final class V1Client {
     @Getter
     private final String agentAddress;
 
-    public final StatusApi statusApi;
-    public final RegionsApi regionsApi;
-    public final NodesApi nodesApi;
+    public final StatusApi status;
+    public final RegionsApi regions;
+    public final NodesApi nodes;
 
     public V1Client(String agentHost, int agentPort) {
         this.agentAddress = agentHost + ":" + agentPort;
 
         final Decoder decoder = new JacksonDecoder();
 
-        this.statusApi = Feign.builder()
+        this.status = Feign.builder()
                 .decoder(decoder)
                 //.errorDecoder(new GitHubErrorDecoder(decoder))
                 .logger(new Logger.ErrorLogger())
@@ -30,12 +30,12 @@ public final class V1Client {
                 .target(StatusApi.class, agentAddress);
                 ////////retrofit.create(StatusApi.class);
 
-        this.regionsApi = Feign.builder()
+        this.regions = Feign.builder()
                 .decoder(decoder)
                 .logger(new Logger.ErrorLogger())
                 .target(RegionsApi.class, agentAddress);
 
-        this.nodesApi = Feign.builder()
+        this.nodes = Feign.builder()
                 .decoder(decoder)
                 .logger(new Logger.ErrorLogger())
                 .target(NodesApi.class, agentAddress);
