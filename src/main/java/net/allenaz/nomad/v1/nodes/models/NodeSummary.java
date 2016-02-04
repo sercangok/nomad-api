@@ -2,34 +2,33 @@ package net.allenaz.nomad.v1.nodes.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
-import lombok.ToString;
 
 @Data
 public class NodeSummary {
     @JsonProperty("ID")
-    String id;
+    protected String id;
 
     @JsonProperty("Datacenter")
-    String datacenter;
+    protected String datacenter;
 
     @JsonProperty("Name")
-    String name;
+    protected String name;
 
     @JsonProperty("NodeClass")
-    String nodeClass;
+    protected String nodeClass;
 
     @JsonProperty("Drain")
-    Boolean drain;
+    protected Boolean drain;
 
     @JsonProperty("Status")
-    String status;
+    protected String status;
 
     @JsonProperty("StatusDescription")
-    String statusDescription;
+    protected String statusDescription;
 
     @JsonProperty("CreateIndex")
-    Integer createIndex;
+    protected Integer createIndex;
 
     @JsonProperty("ModifyIndex")
-    Integer modifyIndex;
+    protected Integer modifyIndex;
 }

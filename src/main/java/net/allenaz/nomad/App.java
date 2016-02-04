@@ -21,6 +21,9 @@ public class App {
             System.out.println("\n\t(DBG) nodeSummary: " + nodeSummary);
         }
 
-        nomadClient.v1.nodes.getNodesOfRegion("global");
+        final String nodeId = nomadClient.v1.nodes.getNodesOfRegion("global").get(0).getId();
+
+        ///
+        System.out.println("\n\t(DBG) node: " + nomadClient.v1.node.getNode(nodeId));
     }
 }
