@@ -10,7 +10,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.*;
 
 import static org.junit.Assert.*;
 
-public class JobsTest extends AbstractCommon {
+public class JobsApiTest extends AbstractCommon {
     @Test
     public void getJobsTest() {
         final String jobsRawResponse = "[{" +

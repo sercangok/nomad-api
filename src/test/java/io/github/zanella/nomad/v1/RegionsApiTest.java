@@ -6,7 +6,7 @@ import org.junit.Test;
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.junit.Assert.assertEquals;
 
-public class RegionsTest extends AbstractCommon {
+public class RegionsApiTest extends AbstractCommon {
     @Test
     public void getRegionsTest() {
         final String region1 = "region1";

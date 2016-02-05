@@ -6,7 +6,7 @@ import org.junit.Test;
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.junit.Assert.assertEquals;
 
-public class StatusTest extends AbstractCommon {
+public class StatusApiTest extends AbstractCommon {
     final static String rawLeader = "\"127.0.0.1:4647\"";
 
     final static String resultLeader = rawLeader.substring(1, rawLeader.length() - 1);
