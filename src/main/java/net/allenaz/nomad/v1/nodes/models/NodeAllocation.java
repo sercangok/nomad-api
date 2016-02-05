@@ -46,7 +46,7 @@ public class NodeAllocation {
 
     @JsonProperty("TaskGroup") String taskGroup;
 
-    @JsonProperty("Job") Job job;
+    @JsonProperty("Job") NodeJob nodeJob;
 
     @JsonProperty("TaskResources") Map<String, Resources> taskResources;
 

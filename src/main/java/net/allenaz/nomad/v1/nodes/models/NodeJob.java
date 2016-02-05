@@ -2,11 +2,12 @@ package net.allenaz.nomad.v1.nodes.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import net.allenaz.nomad.v1.jobs.models.Job;
 
 import java.util.List;
 
 @Data
-public class Job {
+public class NodeJob extends Job {
     @Data
     static class Update {
         @JsonProperty("MaxParallel") Integer maxParallel;
@@ -23,14 +24,6 @@ public class Job {
         @JsonProperty("LTarget") String lTarget;
     }
 
-    @JsonProperty("ModifyIndex") Integer modifyIndex;
-
-    @JsonProperty("CreateIndex") Integer createIndex;
-
-    @JsonProperty("StatusDescription") String statusDescription;
-
-    @JsonProperty("Status") String status;
-
     @JsonProperty("Meta") Object meta;
 
     @JsonProperty("Update") Update update;
@@ -38,14 +31,6 @@ public class Job {
     @JsonProperty("TaskGroups") List<TaskGroup> taskGroup;
 
     @JsonProperty("Region") String region;
-
-    @JsonProperty("ID") String id;
-
-    @JsonProperty("Name") String name;
-
-    @JsonProperty("Type") String type;
-
-    @JsonProperty("Priority") Integer priority;
 
     @JsonProperty("AllAtOnce") Boolean allAtOnce;
 

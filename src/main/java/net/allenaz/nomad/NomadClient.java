@@ -6,7 +6,7 @@ public class NomadClient {
     public final V1Client v1;
 
     private static final String DEFAULT_HOST = "localhost";
-    private static final int DEFAULT_PORT = 4646;
+    public static final int DEFAULT_PORT = 4646;
 
     public NomadClient() { this(DEFAULT_HOST); }
 

@@ -40,6 +40,8 @@ public class App {
         final List<NodeAllocation> nodeAllocationList = nomadClient.v1.node.getNodeAllocations(nodeId);
         for (NodeAllocation nodeAllocation : nodeAllocationList) {
             System.out.println("\n\t(DBG) nodeAllocation: " + nodeAllocation);
+
+            System.out.println("\n\t *** nodeAllocation.getNodeJob(): " + nodeAllocation.getNodeJob());
         }
     }
 }
