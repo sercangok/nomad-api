@@ -11,9 +11,6 @@ public class App {
         final NomadClient nomadClient = new NomadClient("virtual.box.c7");
 
         ///
-        System.out.println("\n\t(DBG) regions: " + nomadClient.v1.regions.getRegions());
-
-        ///
         for (NodeSummary nodeSummary : nomadClient.v1.nodes.getNodes()) {
             System.out.println("\n\t(DBG) nodeSummary: " + nodeSummary);
         }

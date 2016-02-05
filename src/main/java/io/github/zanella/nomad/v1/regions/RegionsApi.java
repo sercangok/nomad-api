@@ -5,6 +5,8 @@ import feign.RequestLine;
 import java.util.List;
 
 public interface RegionsApi {
-    @RequestLine("GET /v1/regions")
+    String regionsUrl = "/v1/regions";
+
+    @RequestLine("GET " + regionsUrl)
     List<String> getRegions();
 }
