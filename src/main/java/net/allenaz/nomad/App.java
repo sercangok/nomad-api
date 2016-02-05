@@ -11,15 +11,6 @@ public class App {
         final NomadClient nomadClient = new NomadClient("virtual.box.c7");
 
         ///
-        final String leader = nomadClient.v1.status.getStatusLeader();
-        final String leaderWithRegion = nomadClient.v1.status.getStatusLeaderOfRegion("global");
-
-        assert (leader.equals(leaderWithRegion));
-        System.out.println("\n\t(DBG) leader: " + leader);
-
-        System.out.println("\n\t(DBG) peers: " + nomadClient.v1.status.getStatusPeers());
-
-        ///
         System.out.println("\n\t(DBG) regions: " + nomadClient.v1.regions.getRegions());
 
         ///

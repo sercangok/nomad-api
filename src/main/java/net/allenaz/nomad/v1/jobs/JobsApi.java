@@ -7,7 +7,9 @@ import net.allenaz.nomad.v1.jobs.models.Job;
 import java.util.List;
 
 public interface JobsApi {
-    @RequestLine("GET /v1/jobs") List<Job> getJobs();
+    String jobsUrl = "/v1/jobs";
 
-    @RequestLine("GET /v1/jobs?region={region}") List<Job> getJobsForRegion(@Param("region") String region);
+    @RequestLine("GET " + jobsUrl) List<Job> getJobs();
+
+    @RequestLine("GET " + jobsUrl + "?region={region}") List<Job> getJobsForRegion(@Param("region") String region);
 }

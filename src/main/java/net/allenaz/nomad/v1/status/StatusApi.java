@@ -6,12 +6,16 @@ import feign.RequestLine;
 import java.util.List;
 
 public interface StatusApi {
-    @RequestLine("GET /v1/status/leader")
+    String statusLeaderUrl = "/v1/status/leader";
+
+    @RequestLine("GET " + statusLeaderUrl)
     String getStatusLeader();
 
-    @RequestLine("GET /v1/status/leader?region={region}")
+    @RequestLine("GET " + statusLeaderUrl + "?region={region}")
     String getStatusLeaderOfRegion(@Param("region") String region);
 
-    @RequestLine("GET /v1/status/peers")
+    String statusPeersUrl = "/v1/status/peers";
+
+    @RequestLine("GET " + statusPeersUrl)
     List<String> getStatusPeers();
 }

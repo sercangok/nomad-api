@@ -1,10 +1,7 @@
 package net.allenaz.nomad.v1;
 
-import com.github.tomakehurst.wiremock.junit.WireMockRule;
-import net.allenaz.nomad.NomadClient;
+import net.allenaz.nomad.v1.jobs.JobsApi;
 import net.allenaz.nomad.v1.jobs.models.Job;
-import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 
 import java.util.List;
@@ -13,23 +10,21 @@ import static com.github.tomakehurst.wiremock.client.WireMock.*;
 
 import static org.junit.Assert.*;
 
-public class JobsTest {
-    @Rule
-    public WireMockRule wireMockRule = new WireMockRule(NomadClient.DEFAULT_PORT);
-
-    NomadClient nomadClient;
-
-    @Before
-    public void setup() throws Exception {
-        nomadClient = new NomadClient();
-    }
-
+public class JobsTest extends AbstractCommon {
     @Test
     public void getJobsTest() {
-        final String jobsRawResponse = "[{'Status': '', 'ModifyIndex': 14, 'Priority': 50, 'Type': 'service', " +
-                "'ID': 'binstore-storagelocker', 'StatusDescription': '', 'Name': 'binstore-storagelocker', " +
-                "'CreateIndex': 14}]";
-        stubFor(get(urlEqualTo("/v1/jobs"))
+        final String jobsRawResponse = "[{" +
+                "    \"ID\": \"binstore-storagelocker\"," +
+                "    \"Name\": \"binstore-storagelocker\"," +
+                "    \"Type\": \"service\"," +
+                "    \"Priority\": 50," +
+                "    \"Status\": \"\"," +
+                "    \"StatusDescription\": \"\"," +
+                "    \"CreateIndex\": 14," +
+                "    \"ModifyIndex\": 14" +
+                "}]";
+
+        stubFor(get(urlEqualTo(JobsApi.jobsUrl))
                 //.withHeader("Accept", equalTo("text/xml"))
                 .willReturn(aResponse()
                         .withStatus(200)
