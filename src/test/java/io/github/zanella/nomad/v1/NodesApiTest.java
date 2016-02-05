@@ -1,11 +1,13 @@
 package io.github.zanella.nomad.v1;
 
 import io.github.zanella.nomad.v1.nodes.NodesApi;
+import io.github.zanella.nomad.v1.nodes.models.NodeInfo;
 import io.github.zanella.nomad.v1.nodes.models.NodeSummary;
 import org.junit.Test;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class NodesApiTest extends AbstractCommon {
     @Test
@@ -26,17 +28,15 @@ public class NodesApiTest extends AbstractCommon {
                         .willReturn(aResponse().withHeader("Content-Type", "application/json").withBody(rawNodes))
         );
 
-        final NodeSummary nodeSummary = new NodeSummary();
-        nodeSummary.setId("c9972143-861d-46e6-df73-1d8287bc3e66");
-        nodeSummary.setDatacenter("dc1");
-        nodeSummary.setName("web-8e40e308");
-        nodeSummary.setNodeClass("");
-        nodeSummary.setDrain(false);
-        nodeSummary.setStatus("ready");
-        nodeSummary.setStatusDescription("");
-        nodeSummary.setCreateIndex(3);
-        nodeSummary.setModifyIndex(4);
+        final NodeInfo nodeInfo = NodeApiTest.newNodeInfo();
 
-        assertEquals(nodeSummary, nomadClient.v1.nodes.getNodes().get(0));
+        final NodeSummary actualNodeSummary = nomadClient.v1.nodes.getNodes().get(0);
+
+        assertFalse(nodeInfo.superEquals(actualNodeSummary));
+
+        //
+        nodeInfo.setName("web-8e40e308");
+
+        assertTrue(nodeInfo.superEquals(actualNodeSummary));
     }
 }

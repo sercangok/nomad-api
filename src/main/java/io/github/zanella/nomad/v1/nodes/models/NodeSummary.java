@@ -2,6 +2,8 @@ package io.github.zanella.nomad.v1.nodes.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 @Data
 public class NodeSummary {

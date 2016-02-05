@@ -9,18 +9,24 @@ import io.github.zanella.nomad.v1.nodes.models.NodeInfo;
 import java.util.List;
 
 public interface NodeApi {
-    @RequestLine("GET /v1/node/{nodeId}")
+    String nodeUrl = "/v1/node";
+
+    @RequestLine("GET " + nodeUrl + "/{nodeId}")
     NodeInfo getNode(@Param("nodeId") String nodeId);
 
-    @RequestLine("GET /v1/node/{nodeId}?region={region}")
+    @RequestLine("GET " + nodeUrl + "/{nodeId}?region={region}")
     NodeInfo getNodeForRegion(@Param("nodeId") String nodeId, @Param("region") String region);
 
-    @RequestLine("GET /v1/node/{nodeId}/allocations")
+    String allocationsUrl = "/allocations";
+
+    @RequestLine("GET " + nodeUrl + "/{nodeId}" + allocationsUrl)
     List<NodeAllocation> getNodeAllocations(@Param("nodeId") String nodeId);
 
-    @RequestLine("PUT /v1/node/{nodeId}/evaluate")
+    String evaluateUrl = "/evaluate";
+    @RequestLine("PUT " + nodeUrl + "/{nodeId}" + evaluateUrl)
     EvalResult putEvaluate(@Param("nodeId") String nodeId);
 
-    @RequestLine("PUT /v1/node/{nodeId}/drain?enable={enableSwitch}")
+    String drainUrl = "/drain";
+    @RequestLine("PUT " + nodeUrl + "/{nodeId}" + drainUrl + "?enable={enableSwitch}")
     EvalResult putDrain(@Param("nodeId") String nodeId, @Param("enableSwitch") Boolean enableSwitch);
 }
