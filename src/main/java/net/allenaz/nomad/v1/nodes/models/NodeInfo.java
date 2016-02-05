@@ -11,7 +11,7 @@ public class NodeInfo extends NodeSummary {
     Map<String, String> attributes;
 
     @JsonProperty("Resources")
-    NodeResources nodeResources;
+    Resources resources;
 
     @JsonProperty("Reserved")
     String reserved;

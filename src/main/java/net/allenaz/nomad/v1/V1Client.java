@@ -24,28 +24,17 @@ public final class V1Client {
 
         final Decoder decoder = new JacksonDecoder();
 
-        this.status = Feign.builder()
+        final Feign.Builder feignBuilder = Feign.builder()
                 .decoder(decoder)
-                //.errorDecoder(new GitHubErrorDecoder(decoder))
-                .logger(new Logger.ErrorLogger())
-                //.logLevel(Logger.Level.BASIC)
-                .target(StatusApi.class, agentAddress);
-                ////////retrofit.create(StatusApi.class);
-
-        this.regions = Feign.builder()
-                .decoder(decoder)
-                .logger(new Logger.ErrorLogger())
-                .target(RegionsApi.class, agentAddress);
-
-        this.nodes = Feign.builder()
-                .decoder(decoder)
-                .logger(new Logger.ErrorLogger())
-                .target(NodesApi.class, agentAddress);
-
-        this.node = Feign.builder()
-                .decoder(decoder)
-                .logger(new Logger.ErrorLogger())
+                .logger(new Logger.ErrorLogger());
                 //.logLevel(Logger.Level.FULL)
-                .target(NodeApi.class, agentAddress);
+
+        this.status = feignBuilder.target(StatusApi.class, agentAddress);
+
+        this.regions = feignBuilder.target(RegionsApi.class, agentAddress);
+
+        this.nodes = feignBuilder.target(NodesApi.class, agentAddress);
+
+        this.node = feignBuilder.target(NodeApi.class, agentAddress);
     }
 }
