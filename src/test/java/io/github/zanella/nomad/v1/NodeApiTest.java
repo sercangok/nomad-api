@@ -3,6 +3,7 @@ package io.github.zanella.nomad.v1;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import io.github.zanella.nomad.v1.common.models.EvalResult;
+import io.github.zanella.nomad.v1.common.models.Job;
 import io.github.zanella.nomad.v1.nodes.NodeApi;
 import io.github.zanella.nomad.v1.nodes.models.*;
 import org.junit.Test;
@@ -201,18 +202,18 @@ public class NodeApiTest extends AbstractCommon {
 
         expectedNodeAllocation.setTaskGroup("cache");
 
-        final NodeJob nodeJob = new NodeJob();
-        nodeJob.setId("example");
-        nodeJob.setName("example");
-        nodeJob.setType("service");
-        nodeJob.setPriority(50);
-        nodeJob.setStatus("");
-        nodeJob.setStatusDescription("");
-        nodeJob.setCreateIndex(5);
-        nodeJob.setModifyIndex(5);
+        final Job job = new Job();
+        job.setId("example");
+        job.setName("example");
+        job.setType("service");
+        job.setPriority(50);
+        job.setStatus("");
+        job.setStatusDescription("");
+        job.setCreateIndex(5);
+        job.setModifyIndex(5);
 
-        nodeJob.setMeta(null);
-        nodeJob.setUpdate( new NodeJob.Update(1, 1e+10) );
+        job.setMeta(null);
+        job.setUpdate( new Job.Update(1, 1e+10) );
 
         final Resources commonResources = new Resources(500, 256, 0, 0, ImmutableList.of(
                 new Resources.Network(
@@ -230,15 +231,15 @@ public class NodeApiTest extends AbstractCommon {
                 "docker",
                 "redis");
 
-        nodeJob.setTaskGroup( ImmutableList.of(new TaskGroup(
+        job.setTaskGroup( ImmutableList.of(new TaskGroup(
                         null, ImmutableList.of(task), new TaskGroup.RestartPolicy(2.5e+10, 3e+11, 10), null, 1, "cache")));
 
-        nodeJob.setRegion("global");
-        nodeJob.setAllAtOnce(false);
-        nodeJob.setDatacenters( ImmutableList.of("dc1") );
-        nodeJob.setConstraints( ImmutableList.of(new NodeJob.Constraint("=", "linux", "$attr.kernel.name") ));
+        job.setRegion("global");
+        job.setAllAtOnce(false);
+        job.setDatacenters( ImmutableList.of("dc1") );
+        job.setConstraints( ImmutableList.of(new Job.Constraint("=", "linux", "$attr.kernel.name") ));
 
-        expectedNodeAllocation.setNodeJob(nodeJob);
+        expectedNodeAllocation.setJob(job);
         expectedNodeAllocation.setTaskResources(ImmutableMap.of("redis", commonResources));
 
         expectedNodeAllocation.setMetrics(

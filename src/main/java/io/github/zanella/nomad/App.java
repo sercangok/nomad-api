@@ -15,7 +15,7 @@ public class App {
         for (NodeAllocation nodeAllocation : nodeAllocationList) {
             System.out.println("\n\t(DBG) nodeAllocation: " + nodeAllocation);
 
-            System.out.println("\n\t *** nodeAllocation.getNodeJob(): " + nodeAllocation.getNodeJob());
+            System.out.println("\n\t *** nodeAllocation.getJob(): " + nodeAllocation.getJob());
         }
     }
 }

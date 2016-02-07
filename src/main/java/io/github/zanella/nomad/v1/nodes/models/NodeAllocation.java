@@ -1,6 +1,7 @@
 package io.github.zanella.nomad.v1.nodes.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.github.zanella.nomad.v1.common.models.Job;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -53,7 +54,8 @@ public class NodeAllocation {
 
     @JsonProperty("TaskGroup") String taskGroup;
 
-    @JsonProperty("Job") NodeJob nodeJob;
+    @JsonProperty("Job")
+    Job job;
 
     @JsonProperty("TaskResources") Map<String, Resources> taskResources;
 
