@@ -3,6 +3,7 @@ package io.github.zanella.nomad.v1.nodes;
 import feign.Param;
 import feign.RequestLine;
 import io.github.zanella.nomad.v1.common.models.EvalResult;
+import io.github.zanella.nomad.v1.common.models.MultipleEvalResult;
 import io.github.zanella.nomad.v1.nodes.models.NodeAllocation;
 import io.github.zanella.nomad.v1.nodes.models.NodeInfo;
 
@@ -24,7 +25,7 @@ public interface NodeApi {
 
     String evaluateUrl = "/evaluate";
     @RequestLine("PUT " + nodeUrl + "/{nodeId}" + evaluateUrl)
-    EvalResult putEvaluate(@Param("nodeId") String nodeId);
+    MultipleEvalResult putEvaluate(@Param("nodeId") String nodeId);
 
     String drainUrl = "/drain";
     @RequestLine("PUT " + nodeUrl + "/{nodeId}" + drainUrl + "?enable={enableSwitch}")

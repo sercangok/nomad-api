@@ -11,9 +11,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EvalResult {
-    @JsonProperty("EvalIDs") List<String> evalIDs;
+    @JsonProperty("EvalID") private String evalID;
 
-    @JsonProperty("EvalCreateIndex") Integer evalCreateIndex;
+    @JsonProperty("EvalCreateIndex") protected Integer evalCreateIndex;
 
-    @JsonProperty("NodeModifyIndex") Integer nodeModifyIndex;
+    @JsonProperty("NodeModifyIndex") protected Integer nodeModifyIndex;
 }
