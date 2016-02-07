@@ -1,19 +1,26 @@
 package io.github.zanella.nomad.v1.nodes.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class TaskGroup {
+
     @Data
-    static class RestartPolicy {
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class RestartPolicy {
         @JsonProperty("Delay") Double delay;
 
         @JsonProperty("Interval") Double interval;
 
-        @JsonProperty("Attempts") Integer Attempts;
+        @JsonProperty("Attempts") Integer attempts;
     }
 
     @JsonProperty("Meta") Object meta;
@@ -22,7 +29,7 @@ public class TaskGroup {
 
     @JsonProperty("RestartPolicy") RestartPolicy restartPolicy;
 
-    @JsonProperty("Constraints") Object Constraints;
+    @JsonProperty("Constraints") Object constraints;
 
     @JsonProperty("Count") Integer count;
 

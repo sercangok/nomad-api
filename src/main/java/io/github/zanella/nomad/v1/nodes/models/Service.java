@@ -1,14 +1,21 @@
 package io.github.zanella.nomad.v1.nodes.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Service {
+
     @Data
-    static class Check {
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Check {
         @JsonProperty("Timeout") Double timeout;
 
         @JsonProperty("Interval") Double interval;

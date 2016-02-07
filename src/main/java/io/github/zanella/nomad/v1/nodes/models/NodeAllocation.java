@@ -1,14 +1,21 @@
 package io.github.zanella.nomad.v1.nodes.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Map;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class NodeAllocation {
+
     @Data
-    static class Metrics {
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Metrics {
         @JsonProperty("CoalescedFailures") Integer coalescedFailures;
 
         @JsonProperty("AllocationTime") Integer AllocationTime;

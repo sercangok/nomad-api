@@ -12,7 +12,7 @@ public class AbstractCommon {
     NomadClient nomadClient;
 
     @Before
-    public void setup() throws Exception {
+    public void setup() {
         nomadClient = new NomadClient();
     }
 }

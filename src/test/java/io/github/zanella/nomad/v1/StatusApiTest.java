@@ -1,5 +1,6 @@
 package io.github.zanella.nomad.v1;
 
+import com.google.common.collect.ImmutableList;
 import io.github.zanella.nomad.v1.status.StatusApi;
 import org.junit.Test;
 
@@ -27,6 +28,6 @@ public class StatusApiTest extends AbstractCommon {
                                 .withBody("[" + rawLeader + "]"))
         );
 
-        assertEquals(resultLeader, nomadClient.v1.status.getStatusPeers().get(0));
+        assertEquals(ImmutableList.of(resultLeader), nomadClient.v1.status.getStatusPeers());
     }
 }

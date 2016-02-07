@@ -1,5 +1,6 @@
 package io.github.zanella.nomad.v1;
 
+import com.google.common.collect.ImmutableList;
 import io.github.zanella.nomad.v1.jobs.JobsApi;
 import io.github.zanella.nomad.v1.jobs.models.Job;
 import org.junit.Test;
@@ -27,24 +28,14 @@ public class JobsApiTest extends AbstractCommon {
         stubFor(get(urlEqualTo(JobsApi.jobsUrl))
                 //.withHeader("Accept", equalTo("text/xml"))
                 .willReturn(aResponse()
-                        .withStatus(200)
                         .withHeader("Content-Type", "application/json")
                         .withBody(jobsRawResponse.replace("'", "\""))
                 )
         );
 
-        final List<Job> jobList = nomadClient.v1.jobs.getJobs();
+        final List<Job> expectedJobList = ImmutableList.of(
+                new Job("binstore-storagelocker", "binstore-storagelocker", "service", 50, "" , "", 14, 14));
 
-        final Job job = new Job();
-        job.setStatus("");
-        job.setPriority(50);
-        job.setName("binstore-storagelocker");
-        job.setType("service");
-        job.setStatusDescription("");
-        job.setId("binstore-storagelocker");
-        job.setModifyIndex(14);
-        job.setCreateIndex(14);
-
-        assertEquals(job, jobList.get(0));
+        assertEquals(expectedJobList, nomadClient.v1.jobs.getJobs());
     }
 }

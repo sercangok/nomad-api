@@ -1,15 +1,22 @@
 package io.github.zanella.nomad.v1.nodes.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigInteger;
 import java.util.List;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class TaskState {
+
     @Data
-    static class Event {
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Event {
         @JsonProperty("KillError") String killError;
 
         @JsonProperty("Message") String message;
@@ -20,7 +27,7 @@ public class TaskState {
 
         @JsonProperty("DriverError") String driverError;
 
-        @JsonProperty("Time") BigInteger time;
+        @JsonProperty("Time") Long time;
 
         @JsonProperty("Type") String type;
     }

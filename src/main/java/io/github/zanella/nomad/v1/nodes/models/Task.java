@@ -1,15 +1,22 @@
 package io.github.zanella.nomad.v1.nodes.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 import java.util.Map;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Task {
+
     @Data
-    static class Config {
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Config {
         @JsonProperty("port_map") List<Map<String, Integer>> portMap;
 
         @JsonProperty("image") String image;
