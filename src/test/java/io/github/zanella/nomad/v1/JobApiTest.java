@@ -5,6 +5,8 @@ import com.google.common.collect.ImmutableMap;
 import io.github.zanella.nomad.v1.common.models.Constraint;
 import io.github.zanella.nomad.v1.common.models.Job;
 import io.github.zanella.nomad.v1.jobs.JobApi;
+import io.github.zanella.nomad.v1.jobs.models.JobAllocation;
+import io.github.zanella.nomad.v1.jobs.models.JobEvaluation;
 import io.github.zanella.nomad.v1.nodes.models.Resources;
 import io.github.zanella.nomad.v1.nodes.models.Task;
 import io.github.zanella.nomad.v1.nodes.models.TaskGroup;
@@ -114,5 +116,77 @@ public class JobApiTest extends AbstractCommon {
         taskGroup.setCount(5);
 
         assertEquals(expectedJob, actualJobResult);
+    }
+
+    @Test
+    public void getJobAllocationsTest() {
+        final String rawJobAllocations = "[ {" +
+                "    \"ID\": \"3575ba9d-7a12-0c96-7b28-add168c67984\"," +
+                "    \"EvalID\": \"151accaa-1ac6-90fe-d427-313e70ccbb88\"," +
+                "    \"Name\": \"binstore-storagelocker.binsl[0]\"," +
+                "    \"NodeID\": \"a703c3ca-5ff8-11e5-9213-970ee8879d1b\"," +
+                "    \"JobID\": \"binstore-storagelocker\"," +
+                "    \"TaskGroup\": \"binsl\"," +
+                "    \"DesiredStatus\": \"run\"," +
+                "    \"DesiredDescription\": \"\"," +
+                "    \"ClientStatus\": \"running\"," +
+                "    \"ClientDescription\": \"\"," +
+                "    \"CreateIndex\": 16," +
+                "    \"ModifyIndex\": 16" +
+                "} ]";
+
+        stubFor(get(urlEqualTo(JobApi.jobUrl + "/42" + JobApi.allocationsUrl))
+                        .willReturn(aResponse()
+                                        .withHeader("Content-Type", "application/json")
+                                        .withBody(rawJobAllocations.replace("'", "\""))
+                        )
+        );
+
+        final JobAllocation expectedJobAllocation = new JobAllocation();
+        expectedJobAllocation.setId("3575ba9d-7a12-0c96-7b28-add168c67984");
+        expectedJobAllocation.setEvalId("151accaa-1ac6-90fe-d427-313e70ccbb88");
+        expectedJobAllocation.setName("binstore-storagelocker.binsl[0]");
+        expectedJobAllocation.setNodeId("a703c3ca-5ff8-11e5-9213-970ee8879d1b");
+        expectedJobAllocation.setJobId("binstore-storagelocker");
+        expectedJobAllocation.setTaskGroup("binsl");
+        expectedJobAllocation.setDesiredStatus("run");
+        expectedJobAllocation.setDesiredDescription("");
+        expectedJobAllocation.setClientStatus("running");
+        expectedJobAllocation.setClientDescription("");
+        expectedJobAllocation.setCreateIndex(16);
+        expectedJobAllocation.setModifyIndex(16);
+
+        assertEquals(ImmutableList.of(expectedJobAllocation), nomadClient.v1.job.getJobAllocations("42"));
+    }
+
+    @Test
+    public void getJobEvaluationsTest() {
+        final String rawJobEvaluations = "[ {" +
+                "    \"ID\": \"151accaa-1ac6-90fe-d427-313e70ccbb88\"," +
+                "    \"Priority\": 50," +
+                "    \"Type\": \"service\"," +
+                "    \"TriggeredBy\": \"job-register\"," +
+                "    \"JobID\": \"binstore-storagelocker\"," +
+                "    \"JobModifyIndex\": 14," +
+                "    \"NodeID\": \"\"," +
+                "    \"NodeModifyIndex\": 0," +
+                "    \"Status\": \"complete\"," +
+                "    \"StatusDescription\": \"\"," +
+                "    \"Wait\": 0," +
+                "    \"NextEval\": \"\"," +
+                "    \"PreviousEval\": \"\"," +
+                "    \"CreateIndex\": 15," +
+                "    \"ModifyIndex\": 17" +
+                "} ]";
+
+        stubFor(get(urlEqualTo(JobApi.jobUrl + "/42" + JobApi.evaluationsUrl))
+                        .willReturn(aResponse()
+                                        .withHeader("Content-Type", "application/json")
+                                        .withBody(rawJobEvaluations.replace("'", "\""))));
+
+        final JobEvaluation expectedJobEvaluation = new JobEvaluation("151accaa-1ac6-90fe-d427-313e70ccbb88", 50,
+                "service", "job-register", "binstore-storagelocker", 14, "", 0, "complete", "", 0, "", "", 15, 17);
+
+        assertEquals(ImmutableList.of(expectedJobEvaluation), nomadClient.v1.job.getJobEvaluations("42"));
     }
 }

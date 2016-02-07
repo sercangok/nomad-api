@@ -9,27 +9,27 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AllocationSummary {
-    @JsonProperty("ID") String id;
+    @JsonProperty("ID") protected String id;
 
-    @JsonProperty("EvalID") String evalId;
+    @JsonProperty("EvalID") protected String evalId;
 
-    @JsonProperty("Name") String name;
+    @JsonProperty("Name") protected String name;
 
-    @JsonProperty("NodeID") String nodeId;
+    @JsonProperty("NodeID") protected String nodeId;
 
-    @JsonProperty("JobID") String jobId;
+    @JsonProperty("JobID") protected String jobId;
 
-    @JsonProperty("TaskGroup") String taskGroup;
+    @JsonProperty("TaskGroup") protected String taskGroup;
 
-    @JsonProperty("DesiredStatus") String desiredStatus;
+    @JsonProperty("DesiredStatus") protected String desiredStatus;
 
-    @JsonProperty("DesiredDescription") String desiredDescription;
+    @JsonProperty("DesiredDescription") protected String desiredDescription;
 
-    @JsonProperty("ClientStatus") String clientStatus;
+    @JsonProperty("ClientStatus") protected String clientStatus;
 
-    @JsonProperty("ClientDescription") String clientDescription;
+    @JsonProperty("ClientDescription") protected String clientDescription;
 
-    @JsonProperty("CreateIndex") Integer createIndex;
+    @JsonProperty("CreateIndex") protected Integer createIndex;
 
-    @JsonProperty("ModifyIndex") Integer modifyIndex;
+    @JsonProperty("ModifyIndex") protected Integer modifyIndex;
 }
