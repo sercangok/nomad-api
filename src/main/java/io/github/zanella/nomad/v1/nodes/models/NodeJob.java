@@ -1,7 +1,7 @@
 package io.github.zanella.nomad.v1.nodes.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.zanella.nomad.v1.jobs.models.Job;
+import io.github.zanella.nomad.v1.jobs.models.JobSummary;
 import lombok.*;
 
 import java.util.List;
@@ -10,7 +10,7 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @NoArgsConstructor
-public class NodeJob extends Job {
+public class NodeJob extends JobSummary {
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
