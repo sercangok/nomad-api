@@ -1,17 +1,18 @@
 package io.github.zanella.nomad.v1.nodes.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.github.zanella.nomad.v1.common.models.AllocationSummary;
 import io.github.zanella.nomad.v1.common.models.Job;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Map;
 
 @Data
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class NodeAllocation {
+public class NodeAllocation extends AllocationSummary {
 
     @Data
     @NoArgsConstructor
@@ -38,38 +39,13 @@ public class NodeAllocation {
         @JsonProperty("Scores") Map<String, Double> scores;
     }
 
-    @JsonProperty("ID") String id;
-
-    @JsonProperty("EvalID") String evalId;
-
-    @JsonProperty("Name") String name;
-
-    @JsonProperty("NodeID") String nodeId;
-
-    @JsonProperty("JobID") String jobId;
-
-    @JsonProperty("ModifyIndex") Integer modifyIndex;
-
     @JsonProperty("Resources") Resources resources;
 
-    @JsonProperty("TaskGroup") String taskGroup;
-
-    @JsonProperty("Job")
-    Job job;
+    @JsonProperty("Job") Job job;
 
     @JsonProperty("TaskResources") Map<String, Resources> taskResources;
 
     @JsonProperty("Metrics") Metrics metrics;
 
-    @JsonProperty("DesiredStatus") String desiredStatus;
-
-    @JsonProperty("DesiredDescription") String desiredDescription;
-
-    @JsonProperty("ClientStatus") String clientStatus;
-
-    @JsonProperty("ClientDescription") String clientDescription;
-
     @JsonProperty("TaskStates") Map<String,TaskState> taskStates;
-
-    @JsonProperty("CreateIndex") Integer createIndex;
 }

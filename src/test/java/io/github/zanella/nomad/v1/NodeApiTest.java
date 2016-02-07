@@ -9,6 +9,7 @@ import io.github.zanella.nomad.v1.nodes.NodeApi;
 import io.github.zanella.nomad.v1.nodes.models.*;
 import org.junit.Test;
 
+import java.util.List;
 import java.util.Map;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
@@ -190,7 +191,7 @@ public class NodeApiTest extends AbstractCommon {
 
         final NodeAllocation expectedNodeAllocation = new NodeAllocation();
 
-        expectedNodeAllocation.setId("203266e5-e0d6-9486-5e05-397ed2b184af");
+        expectedNodeAllocation.setId("blah");
         expectedNodeAllocation.setEvalId("e68125ed-3fba-fb46-46cc-291addbc4455");
         expectedNodeAllocation.setName("example.cache[0]");
         expectedNodeAllocation.setNodeId("e02b6169-83bd-9df6-69bd-832765f333eb");
@@ -210,7 +211,7 @@ public class NodeApiTest extends AbstractCommon {
         job.setPriority(50);
         job.setStatus("");
         job.setStatusDescription("");
-        job.setCreateIndex(5);
+        job.setCreateIndex(4);
         job.setModifyIndex(5);
 
         job.setMeta(null);
@@ -259,8 +260,21 @@ public class NodeApiTest extends AbstractCommon {
                                 "running")));
         expectedNodeAllocation.setCreateIndex(7);
 
+        final List<NodeAllocation> actualNodeAllocations = nomadClient.v1.node.getNodeAllocations("42");
+
+        final List<NodeAllocation> expectedNodeAllocationList = ImmutableList.of(expectedNodeAllocation);
+
         //
-        assertEquals(expectedNodeAllocation, nomadClient.v1.node.getNodeAllocations("42").get(0));
+        assertNotEquals(expectedNodeAllocationList, actualNodeAllocations);
+
+        //
+        job.setCreateIndex(5);
+        assertNotEquals(expectedNodeAllocationList, actualNodeAllocations);
+
+        //
+        expectedNodeAllocation.setId("203266e5-e0d6-9486-5e05-397ed2b184af");
+
+        assertEquals(expectedNodeAllocationList, actualNodeAllocations);
     }
 
     @Test

@@ -8,4 +8,8 @@ public interface JobApi {
     String jobUrl = "/v1/job";
 
     @RequestLine("GET " + jobUrl + "/{jobId}") Job getJob(@Param("jobId") String jobId);
+
+    String allocationsUrl = "allocations";
+
+    @RequestLine("GET " + jobUrl + "/{jobId}/" + allocationsUrl) String getJobAllocations(@Param("jobId") String jobId);
 }
