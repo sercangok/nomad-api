@@ -3,9 +3,9 @@ package io.github.zanella.nomad.v1;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import io.github.zanella.nomad.v1.common.models.Constraint;
-import io.github.zanella.nomad.v1.common.models.EvalResult;
+import io.github.zanella.nomad.v1.nodes.models.NodeDrainEvalResult;
 import io.github.zanella.nomad.v1.common.models.Job;
-import io.github.zanella.nomad.v1.common.models.MultipleEvalResult;
+import io.github.zanella.nomad.v1.nodes.models.NodeEvalResult;
 import io.github.zanella.nomad.v1.nodes.NodeApi;
 import io.github.zanella.nomad.v1.nodes.models.*;
 import org.junit.Test;
@@ -280,10 +280,8 @@ public class NodeApiTest extends AbstractCommon {
                         .willReturn(aResponse().withHeader("Content-Type", "application/json").withBody(rawEvaluate))
         );
 
-        final MultipleEvalResult expectedMultipleEvalResult = new MultipleEvalResult(
-                ImmutableList.of("d092fdc0-e1fd-2536-67d8-43af8ca798ac"), 35, 34);
-
-        assertEquals(expectedMultipleEvalResult, nomadClient.v1.node.putEvaluate("42"));
+        assertEquals(new NodeEvalResult(ImmutableList.of("d092fdc0-e1fd-2536-67d8-43af8ca798ac"), 35, 34),
+                nomadClient.v1.node.putEvaluate("42"));
     }
 
     @Test
@@ -297,8 +295,7 @@ public class NodeApiTest extends AbstractCommon {
                         .willReturn(aResponse().withHeader("Content-Type", "application/json").withBody(rawEvaluate))
         );
 
-        final EvalResult expectedEvalResult = new EvalResult("d092fdc0-e1fd-2536-67d8-43af8ca798ac", 35, 34);
-
-        assertEquals(expectedEvalResult, nomadClient.v1.node.putDrain("42", true));
+        assertEquals(new NodeDrainEvalResult("d092fdc0-e1fd-2536-67d8-43af8ca798ac", 35, 34),
+                nomadClient.v1.node.putDrain("42", true));
     }
 }
