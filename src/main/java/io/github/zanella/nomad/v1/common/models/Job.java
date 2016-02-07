@@ -6,6 +6,7 @@ import io.github.zanella.nomad.v1.nodes.models.TaskGroup;
 import lombok.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -21,18 +22,7 @@ public class Job extends JobSummary {
         @JsonProperty("Stagger") Double stagger;
     }
 
-    @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class Constraint {
-        @JsonProperty("Operand") String operand;
-
-        @JsonProperty("RTarget") String rTarget;
-
-        @JsonProperty("LTarget") String lTarget;
-    }
-
-    @JsonProperty("Meta") Object meta;
+    @JsonProperty("Meta") Map<String, String> meta;
 
     @JsonProperty("Update") Update update;
 

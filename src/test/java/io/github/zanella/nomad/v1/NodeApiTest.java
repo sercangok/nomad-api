@@ -2,6 +2,7 @@ package io.github.zanella.nomad.v1;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import io.github.zanella.nomad.v1.common.models.Constraint;
 import io.github.zanella.nomad.v1.common.models.EvalResult;
 import io.github.zanella.nomad.v1.common.models.Job;
 import io.github.zanella.nomad.v1.nodes.NodeApi;
@@ -237,7 +238,7 @@ public class NodeApiTest extends AbstractCommon {
         job.setRegion("global");
         job.setAllAtOnce(false);
         job.setDatacenters( ImmutableList.of("dc1") );
-        job.setConstraints( ImmutableList.of(new Job.Constraint("=", "linux", "$attr.kernel.name") ));
+        job.setConstraints( ImmutableList.of(new Constraint("=", "linux", "$attr.kernel.name") ));
 
         expectedNodeAllocation.setJob(job);
         expectedNodeAllocation.setTaskResources(ImmutableMap.of("redis", commonResources));

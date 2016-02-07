@@ -1,6 +1,7 @@
 package io.github.zanella.nomad.v1.nodes.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.github.zanella.nomad.v1.common.models.Constraint;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,7 +27,7 @@ public class Task {
     
     @JsonProperty("Resources") Resources resources;
 
-    @JsonProperty("Constraints") Object constraints;
+    @JsonProperty("Constraints") List<Constraint> constraints;
 
     @JsonProperty("Services") List<Service> services;
 
