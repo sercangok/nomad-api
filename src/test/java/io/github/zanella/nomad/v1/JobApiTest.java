@@ -203,4 +203,17 @@ public class JobApiTest extends AbstractCommon {
         assertEquals(new JobEvalResult("d092fdc0-e1fd-2536-67d8-43af8ca798ac", 35, 34),
                 nomadClient.v1.job.putJobEvaluate("42"));
     }
+
+    @Test
+    public void deleteJobTest() {
+        final String rawEval = "{\"EvalID\": \"d092fdc0-e1fd-2536-67d8-43af8ca798ac\", \"EvalCreateIndex\": 35, \"JobModifyIndex\": 34}";
+
+        stubFor(delete(urlEqualTo(JobApi.jobUrl + "/42"))
+                .willReturn(aResponse()
+                        .withHeader("Content-Type", "application/json")
+                        .withBody(rawEval.replace("'", "\""))));
+
+        assertEquals(new JobEvalResult("d092fdc0-e1fd-2536-67d8-43af8ca798ac", 35, 34),
+                nomadClient.v1.job.deleteJob("42"));
+    }
 }

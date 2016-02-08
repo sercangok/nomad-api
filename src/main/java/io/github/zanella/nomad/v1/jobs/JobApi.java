@@ -25,9 +25,11 @@ public interface JobApi {
     @RequestLine("GET " + jobUrl + "/{jobId}" + evaluationsUrl)
     List<JobEvaluation> getJobEvaluations(@Param("jobId") String jobId);
 
-    // TODO - /v1/job/<ID>
-
     String jobEvaluateUrl = "/evaluate";
+
     @RequestLine("PUT " + jobUrl + "/{jobId}" + jobEvaluateUrl)
     JobEvalResult putJobEvaluate(@Param("jobId") String jobId);
+
+    @RequestLine("DELETE " + jobUrl + "/{jobId}")
+    JobEvalResult deleteJob(@Param("jobId") String jobId);
 }
