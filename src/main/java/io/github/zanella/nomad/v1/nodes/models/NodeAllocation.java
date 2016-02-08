@@ -3,6 +3,7 @@ package io.github.zanella.nomad.v1.nodes.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.zanella.nomad.v1.common.models.AllocationSummary;
 import io.github.zanella.nomad.v1.common.models.Job;
+import io.github.zanella.nomad.v1.common.models.TaskState;
 import lombok.*;
 
 import java.util.Map;

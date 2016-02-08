@@ -3,6 +3,7 @@ package io.github.zanella.nomad.v1;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import io.github.zanella.nomad.v1.common.models.Constraint;
+import io.github.zanella.nomad.v1.common.models.TaskState;
 import io.github.zanella.nomad.v1.nodes.models.NodeDrainEvalResult;
 import io.github.zanella.nomad.v1.common.models.Job;
 import io.github.zanella.nomad.v1.nodes.models.NodeEvalResult;
