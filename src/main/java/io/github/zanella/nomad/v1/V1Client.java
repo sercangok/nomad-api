@@ -5,6 +5,7 @@ import feign.Logger;
 import feign.codec.Decoder;
 import feign.jackson.JacksonDecoder;
 import io.github.zanella.nomad.v1.allocations.AllocationsApi;
+import io.github.zanella.nomad.v1.evaluations.EvaluationsApi;
 import io.github.zanella.nomad.v1.jobs.JobApi;
 import lombok.Getter;
 import io.github.zanella.nomad.v1.jobs.JobsApi;
@@ -27,6 +28,8 @@ public final class V1Client {
     public final JobApi job;
 
     public final AllocationsApi allocations;
+
+    public final EvaluationsApi evaluations;
 
     public V1Client(String agentHost, int agentPort) {
         this.agentAddress = agentHost + ":" + agentPort;
@@ -51,5 +54,7 @@ public final class V1Client {
         this.job = feignBuilder.target(JobApi.class, agentAddress);
 
         this.allocations = feignBuilder.target(AllocationsApi.class, agentAddress);
+
+        this.evaluations = feignBuilder.target(EvaluationsApi.class, agentAddress);
     }
 }
