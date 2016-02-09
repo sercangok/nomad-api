@@ -9,7 +9,9 @@ import java.util.List;
 public interface JobsApi {
     String jobsUrl = "/v1/jobs";
 
-    @RequestLine("GET " + jobsUrl) List<JobSummary> getJobs();
+    @RequestLine("GET " + jobsUrl)
+    List<JobSummary> getJobs();
 
-    @RequestLine("GET " + jobsUrl + "?region={region}") List<JobSummary> getJobsForRegion(@Param("region") String region);
+    @RequestLine("GET " + jobsUrl + "?region={region}")
+    List<JobSummary> getJobsForRegion(@Param("region") String region);
 }

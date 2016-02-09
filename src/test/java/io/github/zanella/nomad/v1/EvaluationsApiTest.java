@@ -45,7 +45,7 @@ public class EvaluationsApiTest extends AbstractCommon {
         assertNotEquals(expectedEvaluations, actualEvaluations);
 
         expectedEvaluations.get(0).setModifyIndex(17);
-        
+
         assertEquals(expectedEvaluations, actualEvaluations);
     }
 }
