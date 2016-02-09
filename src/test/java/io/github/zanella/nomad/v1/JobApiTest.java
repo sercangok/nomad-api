@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import io.github.zanella.nomad.v1.common.models.Constraint;
 import io.github.zanella.nomad.v1.common.models.Job;
+import io.github.zanella.nomad.v1.common.models.UpdateStrategy;
 import io.github.zanella.nomad.v1.jobs.JobApi;
 import io.github.zanella.nomad.v1.jobs.models.JobAllocation;
 import io.github.zanella.nomad.v1.jobs.models.JobEvalResult;
@@ -103,7 +104,7 @@ public class JobApiTest extends AbstractCommon {
 
         expectedJob.setTaskGroup( ImmutableList.of(taskGroup) );
 
-        expectedJob.setUpdate( new Job.Update(0, 0d) );
+        expectedJob.setUpdate( new UpdateStrategy(0, 0d) );
         expectedJob.setMeta( ImmutableMap.of("foo", "bar"));
         expectedJob.setStatus("");
         expectedJob.setStatusDescription("");

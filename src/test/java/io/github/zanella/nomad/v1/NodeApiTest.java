@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import io.github.zanella.nomad.v1.common.models.Constraint;
 import io.github.zanella.nomad.v1.common.models.TaskState;
+import io.github.zanella.nomad.v1.common.models.UpdateStrategy;
 import io.github.zanella.nomad.v1.nodes.models.NodeDrainEvalResult;
 import io.github.zanella.nomad.v1.common.models.Job;
 import io.github.zanella.nomad.v1.nodes.models.NodeEvalResult;
@@ -208,7 +209,7 @@ public class NodeApiTest extends AbstractCommon {
         job.setModifyIndex(5);
 
         job.setMeta(null);
-        job.setUpdate( new Job.Update(1, 1e+10) );
+        job.setUpdate( new UpdateStrategy(1, 1e+10) );
 
         final Resources commonResources = new Resources(500, 256, 0, 0, ImmutableList.of(
                 new Resources.Network(

@@ -2,8 +2,8 @@ package io.github.zanella.nomad.v1;
 
 import feign.Feign;
 import feign.Logger;
-import feign.codec.Decoder;
 import feign.jackson.JacksonDecoder;
+import feign.jackson.JacksonEncoder;
 import io.github.zanella.nomad.v1.allocations.AllocationsApi;
 import io.github.zanella.nomad.v1.evaluations.EvaluationsApi;
 import io.github.zanella.nomad.v1.jobs.JobApi;
@@ -34,10 +34,9 @@ public final class V1Client {
     public V1Client(String agentHost, int agentPort) {
         this.agentAddress = agentHost + ":" + agentPort;
 
-        final Decoder decoder = new JacksonDecoder();
-
         final Feign.Builder feignBuilder = Feign.builder()
-                .decoder(decoder)
+                .decoder(new JacksonDecoder())
+                .encoder(new JacksonEncoder())
                 .logger(new Logger.ErrorLogger());
                 //.logLevel(Logger.Level.FULL)
 

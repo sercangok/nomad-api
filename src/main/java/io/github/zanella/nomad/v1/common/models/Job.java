@@ -13,18 +13,9 @@ import java.util.Map;
 @ToString(callSuper = true)
 @NoArgsConstructor
 public class Job extends JobSummary {
-    @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class Update {
-        @JsonProperty("MaxParallel") Integer maxParallel;
-
-        @JsonProperty("Stagger") Double stagger;
-    }
-
     @JsonProperty("Meta") Map<String, String> meta;
 
-    @JsonProperty("Update") Update update;
+    @JsonProperty("Update") UpdateStrategy update;
 
     @JsonProperty("TaskGroups") List<TaskGroup> taskGroup;
 

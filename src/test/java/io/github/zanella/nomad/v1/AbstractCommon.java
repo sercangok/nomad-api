@@ -1,5 +1,6 @@
 package io.github.zanella.nomad.v1;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import io.github.zanella.nomad.NomadClient;
 import org.junit.Before;
@@ -7,12 +8,9 @@ import org.junit.Rule;
 
 public class AbstractCommon {
     @Rule
-    public WireMockRule wireMockRule = new WireMockRule(NomadClient.DEFAULT_PORT);
+    public final WireMockRule wireMockRule = new WireMockRule(NomadClient.DEFAULT_PORT);
 
-    NomadClient nomadClient;
+    protected final NomadClient nomadClient = new NomadClient();
 
-    @Before
-    public void setup() {
-        nomadClient = new NomadClient();
-    }
+    protected final ObjectMapper objectMapper = new ObjectMapper();
 }
