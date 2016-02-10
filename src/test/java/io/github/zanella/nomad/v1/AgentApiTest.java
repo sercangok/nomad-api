@@ -11,130 +11,80 @@ import static org.junit.Assert.assertEquals;
 public class AgentApiTest extends AbstractCommon {
     @Test
     public void getSelfTest() {
-        final String rawSelf = "{\n" +
-                "\"config\": {\n" +
-                "    \"Region\": \"global\",\n" +
-                "    \"Datacenter\": \"dc1\",\n" +
-                "    \"NodeName\": \"\",\n" +
-                "    \"DataDir\": \"\",\n" +
-                "    \"LogLevel\": \"DEBUG\",\n" +
-                "    \"BindAddr\": \"127.0.0.1\",\n" +
-                "    \"EnableDebug\": true,\n" +
-                "    \"Ports\": {\n" +
-                "        \"HTTP\": 4646,\n" +
-                "        \"RPC\": 4647,\n" +
-                "        \"Serf\": 4648\n" +
-                "    },\n" +
-                "    \"Addresses\": {\n" +
-                "        \"HTTP\": \"\",\n" +
-                "        \"RPC\": \"\",\n" +
-                "        \"Serf\": \"\"\n" +
-                "    },\n" +
-                "    \"AdvertiseAddrs\": {\n" +
-                "        \"RPC\": \"\",\n" +
-                "        \"Serf\": \"\"\n" +
-                "    },\n" +
-                "    \"Client\": {\n" +
-                "        \"Enabled\": true,\n" +
-                "        \"StateDir\": \"\",\n" +
-                "        \"AllocDir\": \"\",\n" +
-                "        \"Servers\": null,\n" +
-                "        \"NodeID\": \"\",\n" +
-                "        \"NodeClass\": \"\",\n" +
-                "        \"Meta\": null\n" +
-                "    },\n" +
-                "    \"Server\": {\n" +
-                "        \"Enabled\": true,\n" +
-                "        \"Bootstrap\": false,\n" +
-                "        \"BootstrapExpect\": 0,\n" +
-                "        \"DataDir\": \"\",\n" +
-                "        \"ProtocolVersion\": 0,\n" +
-                "        \"NumSchedulers\": 0,\n" +
-                "        \"EnabledSchedulers\": null\n" +
-                "    },\n" +
-                "    \"Telemetry\": null,\n" +
-                "    \"LeaveOnInt\": false,\n" +
-                "    \"LeaveOnTerm\": false,\n" +
-                "    \"EnableSyslog\": false,\n" +
-                "    \"SyslogFacility\": \"\",\n" +
-                "    \"DisableUpdateCheck\": false,\n" +
-                "    \"DisableAnonymousSignature\": true,\n" +
-                "    \"Revision\": \"\",\n" +
-                "    \"Version\": \"0.1.0\",\n" +
-                "    \"VersionPrerelease\": \"dev\",\n" +
-                "    \"DevMode\": true,\n" +
-                "    \"Atlas\": null\n" +
-                "},\n" +
-                "\"member\": {\n" +
-                "    \"Name\": \"Armons-MacBook-Air.local.global\",\n" +
-                "    \"Addr\": \"127.0.0.1\",\n" +
-                "    \"Port\": 4648,\n" +
-                "    \"Tags\": {\n" +
-                "        \"bootstrap\": \"1\",\n" +
-                "        \"build\": \"0.1.0dev\",\n" +
-                "        \"dc\": \"dc1\",\n" +
-                "        \"port\": \"4647\",\n" +
-                "        \"region\": \"global\",\n" +
-                "        \"role\": \"nomad\",\n" +
-                "        \"vsn\": \"1\",\n" +
-                "        \"vsn_max\": \"1\",\n" +
-                "        \"vsn_min\": \"1\"\n" +
-                "    },\n" +
-                "    \"Status\": \"alive\",\n" +
-                "    \"ProtocolMin\": 1,\n" +
-                "    \"ProtocolMax\": 3,\n" +
-                "    \"ProtocolCur\": 2,\n" +
-                "    \"DelegateMin\": 2,\n" +
-                "    \"DelegateMax\": 4,\n" +
-                "    \"DelegateCur\": 4\n" +
-                "},\n" +
-                "\"stats\": {\n" +
-                "    \"client\": {\n" +
-                "        \"heartbeat_ttl\": \"19116443712\",\n" +
-                "        \"known_servers\": \"0\",\n" +
-                "        \"last_heartbeat\": \"8222075779\",\n" +
-                "        \"num_allocations\": \"0\"\n" +
-                "    },\n" +
-                "    \"nomad\": {\n" +
-                "        \"bootstrap\": \"false\",\n" +
-                "        \"known_regions\": \"1\",\n" +
-                "        \"leader\": \"true\",\n" +
-                "        \"server\": \"true\"\n" +
-                "    },\n" +
-                "    \"raft\": {\n" +
-                "        \"applied_index\": \"91\",\n" +
-                "        \"commit_index\": \"91\",\n" +
-                "        \"fsm_pending\": \"0\",\n" +
-                "        \"last_contact\": \"never\",\n" +
-                "        \"last_log_index\": \"91\",\n" +
-                "        \"last_log_term\": \"1\",\n" +
-                "        \"last_snapshot_index\": \"0\",\n" +
-                "        \"last_snapshot_term\": \"0\",\n" +
-                "        \"num_peers\": \"0\",\n" +
-                "        \"state\": \"Leader\",\n" +
-                "        \"term\": \"1\"\n" +
-                "    },\n" +
-                "    \"runtime\": {\n" +
-                "        \"arch\": \"amd64\",\n" +
-                "        \"cpu_count\": \"4\",\n" +
-                "        \"goroutines\": \"58\",\n" +
-                "        \"kernel.name\": \"darwin\",\n" +
-                "        \"max_procs\": \"1\",\n" +
-                "        \"version\": \"go1.4.2\"\n" +
-                "    },\n" +
-                "    \"serf\": {\n" +
-                "        \"encrypted\": \"false\",\n" +
-                "        \"event_queue\": \"0\",\n" +
-                "        \"event_time\": \"1\",\n" +
-                "        \"failed\": \"0\",\n" +
-                "        \"intent_queue\": \"0\",\n" +
-                "        \"left\": \"0\",\n" +
-                "        \"member_time\": \"1\",\n" +
-                "        \"members\": \"1\",\n" +
-                "        \"query_queue\": \"0\",\n" +
-                "        \"query_time\": \"1\"\n" +
-                "    }\n" +
-                "}\n" +
+        final String rawSelf = "{" +
+                "\"config\": {" +
+                "    \"Region\": \"global\"," +
+                "    \"Datacenter\": \"dc1\"," +
+                "    \"NodeName\": \"\"," +
+                "    \"DataDir\": \"\"," +
+                "    \"LogLevel\": \"DEBUG\"," +
+                "    \"BindAddr\": \"127.0.0.1\"," +
+                "    \"EnableDebug\": true," +
+                "    \"Ports\": {\"HTTP\": 4646, \"RPC\": 4647, \"Serf\": 4648}," +
+                "    \"Addresses\": {\"HTTP\": \"\", \"RPC\": \"\", \"Serf\": \"\"}," +
+                "    \"AdvertiseAddrs\": {\"RPC\": \"\", \"Serf\": \"\"}," +
+                "    \"Client\": {" +
+                "        \"Enabled\": true, \"StateDir\": \"\", \"AllocDir\": \"\", \"Servers\": null," +
+                "        \"NodeID\": \"\", \"NodeClass\": \"\", \"Meta\": null" +
+                "    }," +
+                "    \"Server\": {" +
+                "        \"Enabled\": true, \"Bootstrap\": false, \"BootstrapExpect\": 0," +
+                "        \"DataDir\": \"\", \"ProtocolVersion\": 0, \"NumSchedulers\": 0, \"EnabledSchedulers\": null" +
+                "    }," +
+                "    \"Telemetry\": null," +
+                "    \"LeaveOnInt\": false," +
+                "    \"LeaveOnTerm\": false," +
+                "    \"EnableSyslog\": false," +
+                "    \"SyslogFacility\": \"\"," +
+                "    \"DisableUpdateCheck\": false," +
+                "    \"DisableAnonymousSignature\": true," +
+                "    \"Revision\": \"\"," +
+                "    \"Version\": \"0.1.0\"," +
+                "    \"VersionPrerelease\": \"dev\"," +
+                "    \"DevMode\": true," +
+                "    \"Atlas\": null" +
+                "}," +
+                "\"member\": {" +
+                "    \"Name\": \"Armons-MacBook-Air.local.global\"," +
+                "    \"Addr\": \"127.0.0.1\"," +
+                "    \"Port\": 4648," +
+                "    \"Tags\": {" +
+                "        \"bootstrap\": \"1\", \"build\": \"0.1.0dev\", \"dc\": \"dc1\", \"port\": \"4647\"," +
+                "        \"region\": \"global\", \"role\": \"nomad\", \"vsn\": \"1\", \"vsn_max\": \"1\"," +
+                "        \"vsn_min\": \"1\"" +
+                "    }," +
+                "    \"Status\": \"alive\"," +
+                "    \"ProtocolMin\": 1," +
+                "    \"ProtocolMax\": 3," +
+                "    \"ProtocolCur\": 2," +
+                "    \"DelegateMin\": 2," +
+                "    \"DelegateMax\": 4," +
+                "    \"DelegateCur\": 4" +
+                "}," +
+                "\"stats\": {" +
+                "    \"client\": {" +
+                "        \"heartbeat_ttl\": \"19116443712\", \"known_servers\": \"0\"," +
+                "        \"last_heartbeat\": \"8222075779\", \"num_allocations\": \"0\"" +
+                "    }," +
+                "    \"nomad\": {" +
+                "        \"bootstrap\": \"false\", \"known_regions\": \"1\", \"leader\": \"true\", \"server\": \"true\"" +
+                "    }," +
+                "    \"raft\": {" +
+                "        \"applied_index\": \"91\", \"commit_index\": \"91\", \"fsm_pending\": \"0\"," +
+                "        \"last_contact\": \"never\", \"last_log_index\": \"91\", \"last_log_term\": \"1\"," +
+                "        \"last_snapshot_index\": \"0\", \"last_snapshot_term\": \"0\", \"num_peers\": \"0\"," +
+                "        \"state\": \"Leader\", \"term\": \"1\"" +
+                "    }," +
+                "    \"runtime\": {" +
+                "        \"arch\": \"amd64\", \"cpu_count\": \"4\", \"goroutines\": \"58\"," +
+                "        \"kernel.name\": \"darwin\", \"max_procs\": \"1\", \"version\": \"go1.4.2\"" +
+                "    }," +
+                "    \"serf\": {" +
+                "        \"encrypted\": \"false\", \"event_queue\": \"0\", \"event_time\": \"1\"," +
+                "        \"failed\": \"0\", \"intent_queue\": \"0\", \"left\": \"0\", \"member_time\": \"1\"," +
+                "        \"members\": \"1\", \"query_queue\": \"0\", \"query_time\": \"1\"" +
+                "    }" +
+                "}" +
                 "}";
 
         stubFor(get(urlEqualTo(AgentApi.selfUrl))
