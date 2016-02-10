@@ -2,6 +2,7 @@ package io.github.zanella.nomad.v1;
 
 import com.google.common.collect.ImmutableMap;
 import io.github.zanella.nomad.v1.agent.AgentApi;
+import io.github.zanella.nomad.v1.agent.models.JoinResult;
 import io.github.zanella.nomad.v1.agent.models.Self;
 import org.junit.Test;
 
@@ -124,5 +125,22 @@ public class AgentApiTest extends AbstractCommon {
         );
 
         assertEquals(expectedSelf, nomadClient.v1.agent.getSelf());
+    }
+
+    @Test
+    public void postJoinTest() {
+        final String rawJoinResult = "{\"num_joined\": 1, \"error\": \"\"}";
+
+        final String address = "BLAH";
+
+        // TODO - address definition
+        stubFor(post(urlEqualTo(AgentApi.joinUrl))
+                //.withRequestBody(equalTo(address))  //equalToJson(objectMapper.writeValueAsString(address)))
+                        // TODO - .withRequestBody(matchingJsonPath("$.Type == 'system'"))
+                .willReturn(aResponse()
+                        .withHeader("Content-Type", "application/json")
+                        .withBody(rawJoinResult)));
+
+        assertEquals(new JoinResult(1, ""), nomadClient.v1.agent.postJoin(address));
     }
 }
