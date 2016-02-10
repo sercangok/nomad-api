@@ -14,20 +14,20 @@ public class StatusApiTest extends AbstractCommon {
 
     @Test
     public void getLeaderTest() {
-        stubFor(get(urlEqualTo(StatusApi.statusLeaderUrl))
+        stubFor(get(urlEqualTo(StatusApi.leaderUrl))
                         .willReturn(aResponse().withHeader("Content-Type", "application/json").withBody(rawLeader))
         );
 
-        assertEquals(resultLeader, nomadClient.v1.status.getStatusLeader());
+        assertEquals(resultLeader, nomadClient.v1.status.getLeader());
     }
 
     @Test
     public void getPeersTest() {
-        stubFor(get(urlEqualTo(StatusApi.statusPeersUrl))
+        stubFor(get(urlEqualTo(StatusApi.peersUrl))
                         .willReturn(aResponse().withHeader("Content-Type", "application/json")
                                 .withBody("[" + rawLeader + "]"))
         );
 
-        assertEquals(ImmutableList.of(resultLeader), nomadClient.v1.status.getStatusPeers());
+        assertEquals(ImmutableList.of(resultLeader), nomadClient.v1.status.getPeers());
     }
 }
