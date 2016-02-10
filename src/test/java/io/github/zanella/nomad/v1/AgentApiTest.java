@@ -2,7 +2,7 @@ package io.github.zanella.nomad.v1;
 
 import com.google.common.collect.ImmutableMap;
 import io.github.zanella.nomad.v1.agent.AgentApi;
-import io.github.zanella.nomad.v1.agent.Self;
+import io.github.zanella.nomad.v1.agent.models.Self;
 import org.junit.Test;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;

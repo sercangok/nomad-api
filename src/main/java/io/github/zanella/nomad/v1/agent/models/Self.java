@@ -1,4 +1,4 @@
-package io.github.zanella.nomad.v1.agent;
+package io.github.zanella.nomad.v1.agent.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
