@@ -98,6 +98,85 @@ public class NodeApiTest extends AbstractCommon {
         assertEquals(expectedNodeInfo, nomadClient.v1.node.getNode("42"));
     }
 
+    public static NodeAllocation createNodeallocation() {
+        final Job job = new Job();
+        final Resources commonResources;
+
+        {
+            job.setId("example");
+            job.setName("example");
+            job.setType("service");
+            job.setPriority(50);
+            job.setStatus("");
+            job.setStatusDescription("");
+            job.setCreateIndex(5);
+            job.setModifyIndex(5);
+
+            job.setMeta(null);
+            job.setUpdate( new UpdateStrategy(1, 1e+10) );
+
+            commonResources = new Resources(500, 256, 0, 0, ImmutableList.of(
+                    new Resources.Network(
+                            ImmutableList.of(new Resources.Network.DynamicPort(20802, "db")), null, 0, "127.0.0.1", "","lo")));
+            //
+            final Task task = new Task(
+                    null,
+                    commonResources,
+                    null,
+                    ImmutableList.of(new Service(
+                            ImmutableList.of(new Service.Check(2e+09, 1e+10, "", "", "", "tcp", "alive", "")),
+                            "db", ImmutableList.of("global", "cache"), "example-cache-redis", "")),
+                    null,
+                    new Task.Config(ImmutableList.of(((Map<String, Integer>) ImmutableMap.of("db", 6379))), "redis:latest"),
+                    "docker",
+                    "redis");
+
+            job.setTaskGroup( ImmutableList.of(new TaskGroup(
+                    null, ImmutableList.of(task), new TaskGroup.RestartPolicy(2.5e+10, 3e+11, 10), null, 1, "cache")));
+
+            job.setRegion("global");
+            job.setAllAtOnce(false);
+            job.setDatacenters( ImmutableList.of("dc1") );
+            job.setConstraints( ImmutableList.of(new Constraint("=", "linux", "$attr.kernel.name") ));
+        }
+
+        final NodeAllocation expectedNodeAllocation = new NodeAllocation();
+
+        expectedNodeAllocation.setId("203266e5-e0d6-9486-5e05-397ed2b184af");
+        expectedNodeAllocation.setEvalId("e68125ed-3fba-fb46-46cc-291addbc4455");
+        expectedNodeAllocation.setName("example.cache[0]");
+        expectedNodeAllocation.setNodeId("e02b6169-83bd-9df6-69bd-832765f333eb");
+        expectedNodeAllocation.setJobId("example");
+        expectedNodeAllocation.setModifyIndex(9);
+
+        expectedNodeAllocation.setResources(new Resources(500, 256, 0, 0, ImmutableList.of(
+                new Resources.Network(
+                        ImmutableList.of(new Resources.Network.DynamicPort(20802, "db")), null, 10, "", "",""))));
+
+        expectedNodeAllocation.setTaskGroup("cache");
+
+        expectedNodeAllocation.setJob(job);
+        expectedNodeAllocation.setTaskResources(ImmutableMap.of("redis", commonResources));
+
+        expectedNodeAllocation.setMetrics(
+                new NodeAllocation.Metrics(0, 1590406, 1, 0,  null, null, 0, null, null,
+                        ImmutableMap.of("e02b6169-83bd-9df6-69bd-832765f333eb.binpack", 6.133651487695705)));
+
+        expectedNodeAllocation.setDesiredStatus("run");
+        expectedNodeAllocation.setDesiredDescription("");
+        expectedNodeAllocation.setClientStatus("running");
+        expectedNodeAllocation.setClientDescription("");
+
+        expectedNodeAllocation.setTaskStates(
+                ImmutableMap.of("redis",
+                        new TaskState(
+                                ImmutableList.of(new TaskState.Event("", "", 0, 0, "", 1447806038427841000L, "Started")),
+                                "running")));
+        expectedNodeAllocation.setCreateIndex(7);
+
+        return expectedNodeAllocation;
+    }
+
     @Test
     public void getNodeAllocationsTest() {
         final String rawNodeAllocation = "[ {" +
@@ -183,91 +262,27 @@ public class NodeApiTest extends AbstractCommon {
                         .willReturn(aResponse().withHeader("Content-Type", "application/json").withBody(rawNodeAllocation))
         );
 
-        final NodeAllocation expectedNodeAllocation = new NodeAllocation();
-
-        expectedNodeAllocation.setId("blah");
-        expectedNodeAllocation.setEvalId("e68125ed-3fba-fb46-46cc-291addbc4455");
-        expectedNodeAllocation.setName("example.cache[0]");
-        expectedNodeAllocation.setNodeId("e02b6169-83bd-9df6-69bd-832765f333eb");
-        expectedNodeAllocation.setJobId("example");
-        expectedNodeAllocation.setModifyIndex(9);
-
-        expectedNodeAllocation.setResources(new Resources(500, 256, 0, 0, ImmutableList.of(
-                new Resources.Network(
-                        ImmutableList.of(new Resources.Network.DynamicPort(20802, "db")), null, 10, "", "",""))));
-
-        expectedNodeAllocation.setTaskGroup("cache");
-
-        final Job job = new Job();
-        job.setId("example");
-        job.setName("example");
-        job.setType("service");
-        job.setPriority(50);
-        job.setStatus("");
-        job.setStatusDescription("");
-        job.setCreateIndex(4);
-        job.setModifyIndex(5);
-
-        job.setMeta(null);
-        job.setUpdate( new UpdateStrategy(1, 1e+10) );
-
-        final Resources commonResources = new Resources(500, 256, 0, 0, ImmutableList.of(
-                new Resources.Network(
-                        ImmutableList.of(new Resources.Network.DynamicPort(20802, "db")), null, 0, "127.0.0.1", "","lo")));
-        //
-        final Task task = new Task(
-                null,
-                commonResources,
-                null,
-                ImmutableList.of(new Service(
-                        ImmutableList.of(new Service.Check(2e+09, 1e+10, "", "", "", "tcp", "alive", "")),
-                        "db", ImmutableList.of("global", "cache"), "example-cache-redis", "")),
-                null,
-                new Task.Config(ImmutableList.of(((Map<String, Integer>) ImmutableMap.of("db", 6379))), "redis:latest"),
-                "docker",
-                "redis");
-
-        job.setTaskGroup( ImmutableList.of(new TaskGroup(
-                        null, ImmutableList.of(task), new TaskGroup.RestartPolicy(2.5e+10, 3e+11, 10), null, 1, "cache")));
-
-        job.setRegion("global");
-        job.setAllAtOnce(false);
-        job.setDatacenters( ImmutableList.of("dc1") );
-        job.setConstraints( ImmutableList.of(new Constraint("=", "linux", "$attr.kernel.name") ));
-
-        expectedNodeAllocation.setJob(job);
-        expectedNodeAllocation.setTaskResources(ImmutableMap.of("redis", commonResources));
-
-        expectedNodeAllocation.setMetrics(
-                new NodeAllocation.Metrics(0, 1590406, 1, 0,  null, null, 0, null, null,
-                        ImmutableMap.of("e02b6169-83bd-9df6-69bd-832765f333eb.binpack", 6.133651487695705)));
-
-        expectedNodeAllocation.setDesiredStatus("run");
-        expectedNodeAllocation.setDesiredDescription("");
-        expectedNodeAllocation.setClientStatus("running");
-        expectedNodeAllocation.setClientDescription("");
-
-        expectedNodeAllocation.setTaskStates(
-                ImmutableMap.of("redis",
-                        new TaskState(
-                                ImmutableList.of(new TaskState.Event("", "", 0, 0, "", 1447806038427841000L, "Started")),
-                                "running")));
-        expectedNodeAllocation.setCreateIndex(7);
+        final NodeAllocation expectedNodeAllocation = createNodeallocation();
 
         final List<NodeAllocation> actualNodeAllocations = nomadClient.v1.node.getNodeAllocations("42");
 
         final List<NodeAllocation> expectedNodeAllocationList = ImmutableList.of(expectedNodeAllocation);
 
+        final String originalId = expectedNodeAllocation.getId();
+
+        final Integer originalCreateIndex = expectedNodeAllocation.getJob().getCreateIndex();
+
         //
+        expectedNodeAllocation.setId("blah");
+        expectedNodeAllocation.getJob().setCreateIndex(4);
         assertNotEquals(expectedNodeAllocationList, actualNodeAllocations);
 
         //
-        job.setCreateIndex(5);
+        expectedNodeAllocation.getJob().setCreateIndex(originalCreateIndex);
         assertNotEquals(expectedNodeAllocationList, actualNodeAllocations);
 
         //
-        expectedNodeAllocation.setId("203266e5-e0d6-9486-5e05-397ed2b184af");
-
+        expectedNodeAllocation.setId(originalId);
         assertEquals(expectedNodeAllocationList, actualNodeAllocations);
     }
 
