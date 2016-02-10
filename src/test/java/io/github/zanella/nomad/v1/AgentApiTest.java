@@ -1,5 +1,6 @@
 package io.github.zanella.nomad.v1;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import io.github.zanella.nomad.v1.agent.AgentApi;
 import io.github.zanella.nomad.v1.agent.models.JoinResult;
@@ -136,11 +137,57 @@ public class AgentApiTest extends AbstractCommon {
         // TODO - address definition
         stubFor(post(urlEqualTo(AgentApi.joinUrl))
                 //.withRequestBody(equalTo(address))  //equalToJson(objectMapper.writeValueAsString(address)))
-                        // TODO - .withRequestBody(matchingJsonPath("$.Type == 'system'"))
+                // TODO - .withRequestBody(matchingJsonPath("$.Type == 'system'"))
                 .willReturn(aResponse()
                         .withHeader("Content-Type", "application/json")
                         .withBody(rawJoinResult)));
 
         assertEquals(new JoinResult(1, ""), nomadClient.v1.agent.postJoin(address));
+    }
+
+    @Test
+    public void getMembersTest() {
+        final String rawMembers = "[ {" +
+                "    \"Name\": \"Armons-MacBook-Air.local.global\"," +
+                "    \"Addr\": \"127.0.0.1\"," +
+                "    \"Port\": 4648," +
+                "    \"Tags\": {" +
+                "        \"bootstrap\": \"1\", \"build\": \"0.1.0dev\", \"dc\": \"dc1\", \"port\": \"4647\"," +
+                "        \"region\": \"global\", \"role\": \"nomad\", \"vsn\": \"1\", \"vsn_max\": \"1\"," +
+                "        \"vsn_min\": \"1\"" +
+                "    }," +
+                "    \"Status\": \"alive\"," +
+                "    \"ProtocolMin\": 1," +
+                "    \"ProtocolMax\": 3," +
+                "    \"ProtocolCur\": 2," +
+                "    \"DelegateMin\": 2," +
+                "    \"DelegateMax\": 4," +
+                "    \"DelegateCur\": 4" +
+                "} ]";
+
+        stubFor(get(urlEqualTo(AgentApi.membersUrl))
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBody(rawMembers)));
+
+        final Self.Member expectedMember = new Self.Member(
+                "Armons-MacBook-Air.local.global", "127.0.0.1", 4648,
+                ImmutableMap.<String, String>builder()
+                        .put("bootstrap", "1").put("build", "0.1.0dev").put("dc", "dc1").put("port", "4647")
+                        .put("region", "global").put("role", "nomad").put("vsn", "1").put("vsn_max", "1")
+                        .put("vsn_min", "1").build(),
+                "alive", 1, 3, 2, 2, 4, 4);
+
+        assertEquals(ImmutableList.of(expectedMember), nomadClient.v1.agent.getMembers());
+    }
+
+    @Test
+    public void getServersTest() {
+        final String server1 = "server1.local:4647";
+        final String server2 = "server2.local:4647";
+        final String rawServers = "[\"" + server1 + "\", \"" + server2 + "\"]";
+
+        stubFor(get(urlEqualTo(AgentApi.serversUrl))
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBody(rawServers)));
+
+        assertEquals(ImmutableList.of(server1, server2), nomadClient.v1.agent.getServers());
     }
 }
