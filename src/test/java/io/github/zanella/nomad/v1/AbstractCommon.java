@@ -3,7 +3,6 @@ package io.github.zanella.nomad.v1;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import io.github.zanella.nomad.NomadClient;
-import org.junit.Before;
 import org.junit.Rule;
 
 public class AbstractCommon {
