@@ -32,3 +32,8 @@ compile "io.github.zanella.nomad:nomad-api:0.1"
 * Checkout the sources
 * mvn package
 
+
+## ToDo
+
+ - implement JobSpec
+ - Blocking Queries
