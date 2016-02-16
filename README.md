@@ -1,7 +1,7 @@
 nomad-api
 ==========
 
-Java client for Nomad HTTP API (https://www.nomadproject.io)
+Java client for Nomad's HTTP API (https://www.nomadproject.io)
 
 ## How to use
 ```java
