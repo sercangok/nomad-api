@@ -78,12 +78,10 @@ public final class V1Client {
     }
 
     protected ObjectMapper customObjectMapper() {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.setAnnotationIntrospector(new JacksonLombokAnnotationIntrospector());
-        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-        mapper = mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, true);
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-
-        return mapper;
+        return new ObjectMapper()
+                .setAnnotationIntrospector(new JacksonLombokAnnotationIntrospector())
+                .setSerializationInclusion(JsonInclude.Include.NON_NULL)
+                .configure(SerializationFeature.WRAP_ROOT_VALUE, true)
+                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 }
