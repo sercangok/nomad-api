@@ -6,6 +6,7 @@ import io.github.zanella.nomad.v1.common.models.Job;
 import io.github.zanella.nomad.v1.common.models.TaskState;
 import lombok.*;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @Data
@@ -44,7 +45,7 @@ public class NodeAllocation extends AllocationSummary {
 
     @JsonProperty("Job") Job job;
 
-    @JsonProperty("TaskResources") Map<String, Resources> taskResources;
+    @JsonProperty("TaskResources") Map<String, Resources> taskResources = new HashMap<String, Resources>();
 
     @JsonProperty("Metrics") Metrics metrics;
 

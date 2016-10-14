@@ -118,21 +118,19 @@ public class NodeApiTest extends AbstractCommon {
             commonResources = new Resources(500, 256, 0, 0, ImmutableList.of(
                     new Resources.Network(
                             ImmutableList.of(new Resources.Network.DynamicPort(20802, "db")), null, 0, "127.0.0.1", "","lo")));
-            //
+
             final Task task = new Task(
                     null,
                     commonResources,
-                    null,
+                    null, null, "docker", "redis",
+                    new Task.Config(ImmutableList.of(((Map<String, Integer>) ImmutableMap.of("db", 6379))), "redis:latest", null, null),
                     ImmutableList.of(new Service(
-                            ImmutableList.of(new Service.Check(2e+09, 1e+10, "", "", "", "tcp", "alive", "")),
+                            ImmutableList.of(new Service.Check((long) 2e+09, (long) 1e+10, "", "", "", "tcp", "alive", "")),
                             "db", ImmutableList.of("global", "cache"), "example-cache-redis", "")),
-                    null,
-                    new Task.Config(ImmutableList.of(((Map<String, Integer>) ImmutableMap.of("db", 6379))), "redis:latest"),
-                    "docker",
-                    "redis");
+                    null);
 
-            job.setTaskGroup( ImmutableList.of(new TaskGroup(
-                    null, ImmutableList.of(task), new TaskGroup.RestartPolicy(2.5e+10, 3e+11, 10), null, 1, "cache")));
+            job.setTaskGroups( ImmutableList.of(new TaskGroup(
+                    null, ImmutableList.of(task), new TaskGroup.RestartPolicy(25000000000L, 300000000000L, 10, "fail"), null, 1, "cache")));
 
             job.setRegion("global");
             job.setAllAtOnce(false);
@@ -212,7 +210,7 @@ public class NodeApiTest extends AbstractCommon {
                 "                \"Checks\": [ {" +
                 "                    \"Timeout\": 2e+09, \"Interval\": 1e+10, \"Protocol\": \"\"," +
                 "                    \"Http\": \"\", \"Script\": \"\", \"Type\": \"tcp\"," +
-                "                    \"Name\": \"alive\", \"Id\": \"\"" +
+                "                    \"Name\": \"alive\", \"Id\": \"\", \"Path\": \"\"" +
                 "                  } ]," +
                 "                \"PortLabel\": \"db\",\"Tags\": [ \"global\", \"cache\"]," +
                 "                \"Name\": \"example-cache-redis\", \"Id\": \"\"" +
@@ -221,7 +219,7 @@ public class NodeApiTest extends AbstractCommon {
                 "            \"Config\": { \"port_map\": [ {\"db\": 6379} ], \"image\": \"redis:latest\"}," +
                 "            \"Driver\": \"docker\", \"Name\": \"redis\"" +
                 "          } ]," +
-                "        \"RestartPolicy\": {\"Delay\": 2.5e+10, \"Interval\": 3e+11, \"Attempts\": 10}," +
+                "        \"RestartPolicy\": {\"Delay\": 2.5e+10, \"Interval\": 3e+11, \"Attempts\": 10, \"Mode\": \"fail\"}," +
                 "        \"Constraints\": null,\"Count\": 1,\"Name\": \"cache\"" +
                 "      } ]," +
                 "    \"Region\": \"global\", \"ID\": \"example\", \"Name\": \"example\", \"Type\": \"service\"," +

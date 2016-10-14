@@ -76,7 +76,8 @@ public class AllocationApiTest extends AbstractCommon {
                 "                    \"Script\": \"\",\n" +
                 "                    \"Type\": \"tcp\",\n" +
                 "                    \"Name\": \"alive\",\n" +
-                "                    \"Id\": \"\"\n" +
+                "                    \"Id\": \"\",\n" +
+                "                    \"Path\": \"\"\n" +
                 "                  }\n" +
                 "                ],\n" +
                 "                \"PortLabel\": \"db\",\n" +
@@ -98,7 +99,7 @@ public class AllocationApiTest extends AbstractCommon {
                 "            \"Name\": \"redis\"\n" +
                 "          }\n" +
                 "        ],\n" +
-                "        \"RestartPolicy\": {\"Delay\": 2.5e+10, \"Interval\": 3e+11,\"Attempts\": 10}," +
+                "        \"RestartPolicy\": {\"Delay\": 2.5e+10, \"Interval\": 3e+11,\"Attempts\": 10, \"Mode\": \"fail\"}," +
                 "        \"Constraints\": null,\n" +
                 "        \"Count\": 1,\n" +
                 "        \"Name\": \"cache\"\n" +

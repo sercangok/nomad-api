@@ -1,5 +1,10 @@
 package io.github.zanella.nomad.v1;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.xebia.jacksonlombok.JacksonLombokAnnotationIntrospector;
 import feign.Feign;
 import feign.Logger;
 import feign.jackson.JacksonDecoder;
@@ -7,6 +12,7 @@ import feign.jackson.JacksonEncoder;
 import io.github.zanella.nomad.v1.agent.AgentApi;
 import io.github.zanella.nomad.v1.allocations.AllocationApi;
 import io.github.zanella.nomad.v1.allocations.AllocationsApi;
+import io.github.zanella.nomad.v1.evaluations.EvaluationApi;
 import io.github.zanella.nomad.v1.evaluations.EvaluationsApi;
 import io.github.zanella.nomad.v1.jobs.JobApi;
 import lombok.Getter;
@@ -33,15 +39,18 @@ public final class V1Client {
     public final AllocationApi allocation;
 
     public final EvaluationsApi evaluations;
+    public final EvaluationApi evaluation;
 
     public final AgentApi agent;
 
     public V1Client(String agentHost, int agentPort) {
         this.agentAddress = agentHost + ":" + agentPort;
 
+        ObjectMapper objectMapper = objectMapper();
+
         final Feign.Builder feignBuilder = Feign.builder()
-                .decoder(new JacksonDecoder())
-                .encoder(new JacksonEncoder())
+                .decoder(new JacksonDecoder(objectMapper))
+                .encoder(new JacksonEncoder(objectMapper))
                 .logger(new Logger.ErrorLogger());
                 //.logLevel(Logger.Level.FULL)
 
@@ -63,6 +72,18 @@ public final class V1Client {
 
         this.evaluations = feignBuilder.target(EvaluationsApi.class, agentAddress);
 
+        this.evaluation = feignBuilder.target(EvaluationApi.class, agentAddress);
+
         this.agent = feignBuilder.target(AgentApi.class, agentAddress);
+    }
+
+    protected ObjectMapper objectMapper() {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.setAnnotationIntrospector(new JacksonLombokAnnotationIntrospector());
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        mapper = mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, true);
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+        return mapper;
     }
 }

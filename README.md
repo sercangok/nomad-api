@@ -30,8 +30,17 @@ compile "io.github.zanella.nomad:nomad-api:0.1"
 
 ## How to build from sources
 * Checkout the sources
-* mvn package
+* `mvn package`
 
+**Note:** By default the [`maven-gpg-plugin`](http://maven.apache.org/components/plugins/maven-gpg-plugin)
+will try sign artifacts as part of the `verify` phase.
+If you do not have a GPG key available or do not want to sign
+the artifacts and you want to run the `install` goal, 
+you can skip GPG signing with:
+
+```bash
+$ mvn install -Dgpg.skip=true
+```
 
 ## ToDo
 

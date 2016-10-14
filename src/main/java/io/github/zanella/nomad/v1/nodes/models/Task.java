@@ -11,7 +11,7 @@ import java.util.Map;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
+@AllArgsConstructor(suppressConstructorProperties = true)
 public class Task {
 
     @Data
@@ -21,6 +21,19 @@ public class Task {
         @JsonProperty("port_map") List<Map<String, Integer>> portMap;
 
         @JsonProperty("image") String image;
+
+        @JsonProperty("command") String command;
+
+        @JsonProperty("args") List<String> args;
+    }
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class LogConfig {
+        @JsonProperty("MaxFiles") Integer maxFiles;
+
+        @JsonProperty("MaxFileSizeMB") Integer maxFileSize;
     }
 
     @JsonProperty("Meta") Object meta;
@@ -29,13 +42,15 @@ public class Task {
 
     @JsonProperty("Constraints") List<Constraint> constraints;
 
-    @JsonProperty("Services") List<Service> services;
-
-    @JsonProperty("Env") Object env;
-
-    @JsonProperty("Config") Config config;
+    @JsonProperty("Env") Map<String, String> env;
 
     @JsonProperty("Driver") String driver;
 
     @JsonProperty("Name") String name;
+
+    @JsonProperty("Config") Config config;
+
+    @JsonProperty("Services") List<Service> services;
+
+    @JsonProperty("LogConfig") LogConfig logConfig;
 }

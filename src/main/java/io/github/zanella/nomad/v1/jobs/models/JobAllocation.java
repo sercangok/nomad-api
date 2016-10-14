@@ -6,6 +6,6 @@ import lombok.*;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-//@NoArgsConstructor
 @AllArgsConstructor
-public class JobAllocation extends AllocationSummary {}
+public class JobAllocation extends AllocationSummary {
+}

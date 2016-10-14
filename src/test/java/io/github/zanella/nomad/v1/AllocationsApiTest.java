@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import io.github.zanella.nomad.v1.allocations.AllocationsApi;
 import io.github.zanella.nomad.v1.allocations.models.Allocation;
+import io.github.zanella.nomad.v1.common.models.AllocationSummary;
 import io.github.zanella.nomad.v1.common.models.TaskState;
 import org.junit.Test;
 
@@ -16,7 +17,7 @@ import static org.junit.Assert.assertNotEquals;
 public class AllocationsApiTest extends AbstractCommon {
     @Test
     public void getAllocationsTest() {
-        final String rawAllocations = "[ {" +
+        final String rawAllocations = "[{" +
                 "  \"ID\": \"203266e5-e0d6-9486-5e05-397ed2b184af\"," +
                 "  \"EvalID\": \"e68125ed-3fba-fb46-46cc-291addbc4455\"," +
                 "  \"Name\": \"example.cache[0]\"," +
@@ -38,7 +39,7 @@ public class AllocationsApiTest extends AbstractCommon {
                 "  }," +
                 "  \"CreateIndex\": 7," +
                 "  \"ModifyIndex\": 9" +
-                "} ]";
+                "}]";
 
         stubFor(get(urlEqualTo(AllocationsApi.allocationsUrl))
                         .willReturn(aResponse().withHeader("Content-Type", "application/json").withBody(rawAllocations))

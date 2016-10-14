@@ -16,13 +16,13 @@ public class Service {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Check {
-        @JsonProperty("Timeout") Double timeout;
+        @JsonProperty("Timeout") Long timeout;
 
-        @JsonProperty("Interval") Double interval;
+        @JsonProperty("Interval") Long interval;
 
         @JsonProperty("Protocol") String protocol;
 
-        @JsonProperty("Http") String http;
+        @JsonProperty("Path") String path;
 
         @JsonProperty("Script") String script;
 
