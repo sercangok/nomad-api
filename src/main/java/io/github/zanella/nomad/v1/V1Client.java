@@ -46,7 +46,7 @@ public final class V1Client {
     public V1Client(String agentHost, int agentPort) {
         this.agentAddress = agentHost + ":" + agentPort;
 
-        ObjectMapper objectMapper = objectMapper();
+        final ObjectMapper objectMapper = customObjectMapper();
 
         final Feign.Builder feignBuilder = Feign.builder()
                 .decoder(new JacksonDecoder(objectMapper))
@@ -77,7 +77,7 @@ public final class V1Client {
         this.agent = feignBuilder.target(AgentApi.class, agentAddress);
     }
 
-    protected ObjectMapper objectMapper() {
+    protected ObjectMapper customObjectMapper() {
         ObjectMapper mapper = new ObjectMapper();
         mapper.setAnnotationIntrospector(new JacksonLombokAnnotationIntrospector());
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
