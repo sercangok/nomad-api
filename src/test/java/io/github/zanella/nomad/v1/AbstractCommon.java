@@ -18,10 +18,10 @@ public class AbstractCommon {
     protected final ObjectMapper objectMapper;
 
     public AbstractCommon() {
-        objectMapper = new ObjectMapper();
-        objectMapper.setAnnotationIntrospector(new JacksonLombokAnnotationIntrospector());
-        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-        objectMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, true);
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        objectMapper = new ObjectMapper()
+                .setAnnotationIntrospector(new JacksonLombokAnnotationIntrospector())
+                .setSerializationInclusion(JsonInclude.Include.NON_NULL)
+                .configure(SerializationFeature.WRAP_ROOT_VALUE, true)
+                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 }
