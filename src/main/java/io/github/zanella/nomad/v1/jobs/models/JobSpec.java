@@ -1,23 +1,17 @@
 package io.github.zanella.nomad.v1.jobs.models;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import io.github.zanella.nomad.v1.common.models.UpdateStrategy;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonRootName;
 
-import java.util.List;
+import io.github.zanella.nomad.v1.common.models.Job;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 @NoArgsConstructor
-@AllArgsConstructor
-public class JobSpec {
-    @JsonProperty("Region") String region;
-
-    @JsonProperty("Datacenters") List<String> datacenters;
-
-    @JsonProperty("Type") String type;
-
-    @JsonProperty("Update") UpdateStrategy update;
+@JsonRootName("Job")
+public class JobSpec extends Job {
 }

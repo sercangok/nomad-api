@@ -17,7 +17,7 @@ public class Job extends JobSummary {
 
     @JsonProperty("Update") UpdateStrategy update;
 
-    @JsonProperty("TaskGroups") List<TaskGroup> taskGroup;
+    @JsonProperty("TaskGroups") List<TaskGroup> taskGroups;
 
     @JsonProperty("Region") String region;
 

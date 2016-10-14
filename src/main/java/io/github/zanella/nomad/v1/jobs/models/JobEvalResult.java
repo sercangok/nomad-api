@@ -14,4 +14,10 @@ public class JobEvalResult {
     @JsonProperty("EvalCreateIndex") Integer evalCreateIndex;
 
     @JsonProperty("JobModifyIndex") Integer nodeModifyIndex;
+
+    @JsonProperty("Index") Integer index;
+
+    @JsonProperty("LastContact") Integer lastContact;
+
+    @JsonProperty("KnownLeader") Boolean knownLeader;
 }

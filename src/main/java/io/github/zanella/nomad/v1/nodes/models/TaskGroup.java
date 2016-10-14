@@ -18,11 +18,13 @@ public class TaskGroup {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class RestartPolicy {
-        @JsonProperty("Delay") Double delay;
+        @JsonProperty("Delay") Long delay;
 
-        @JsonProperty("Interval") Double interval;
+        @JsonProperty("Interval") Long interval;
 
         @JsonProperty("Attempts") Integer attempts;
+
+        @JsonProperty("Mode") String mode;
     }
 
     @JsonProperty("Meta") Map<String, String> meta;

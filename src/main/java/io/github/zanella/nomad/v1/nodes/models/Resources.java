@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -26,9 +27,18 @@ public class Resources {
             @JsonProperty("Label") String label;
         }
 
-        @JsonProperty("DynamicPorts") List<DynamicPort> dynamicPorts;
+        @Data
+        @NoArgsConstructor
+        @AllArgsConstructor
+        public static class ReservedPort {
+            @JsonProperty("Value") Integer value;
 
-        @JsonProperty("ReservedPorts") Object reservedPorts;
+            @JsonProperty("Label") String label;
+        }
+
+        @JsonProperty("DynamicPorts") List<DynamicPort> dynamicPorts = new ArrayList<DynamicPort>();
+
+        @JsonProperty("ReservedPorts") List<ReservedPort> reservedPorts;
 
         @JsonProperty("MBits") Integer mBits;
 
@@ -47,5 +57,5 @@ public class Resources {
 
     @JsonProperty("IOPS") Integer iops;
 
-    @JsonProperty("Networks") List<Network> networks;
+    @JsonProperty("Networks") List<Network> networks = new ArrayList<Network>();
 }

@@ -11,7 +11,6 @@ import java.util.Map;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @NoArgsConstructor
-@AllArgsConstructor
 public class Allocation extends AllocationSummary {
     @JsonProperty("TaskStates")
     Map<String,TaskState> taskStates;

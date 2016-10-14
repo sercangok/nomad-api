@@ -44,7 +44,8 @@ public class JobsApiTest extends AbstractCommon {
     @Test
     public void postJobTest() throws Exception {
         final String rawEvalResult = "{ \"EvalID\": \"d092fdc0-e1fd-2536-67d8-43af8ca798ac\"," +
-                "\"EvalCreateIndex\": 35,\"JobModifyIndex\": 34 }";
+                "\"EvalCreateIndex\": 35,\"JobModifyIndex\": 34, \"Index\": 348, \"LastContact\": 0,\n" +
+                "\"KnownLeader\": false\n }";
 
         final JobSpec jobSpec = new JobSpec(); {
             jobSpec.setRegion("us");
@@ -68,7 +69,7 @@ public class JobsApiTest extends AbstractCommon {
                         .withBody(rawEvalResult.replace("'", "\""))));
 
         assertEquals(
-                new JobEvalResult("d092fdc0-e1fd-2536-67d8-43af8ca798ac", 35, 34),
+                new JobEvalResult("d092fdc0-e1fd-2536-67d8-43af8ca798ac", 35, 34, 348, 0, false),
                 nomadClient.v1.jobs.postJob(jobSpec));
     }
 }
