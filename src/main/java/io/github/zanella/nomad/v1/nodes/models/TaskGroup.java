@@ -11,12 +11,12 @@ import java.util.Map;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
+@AllArgsConstructor(suppressConstructorProperties = true)
 public class TaskGroup {
 
     @Data
     @NoArgsConstructor
-    @AllArgsConstructor
+    @AllArgsConstructor(suppressConstructorProperties = true)
     public static class RestartPolicy {
         @JsonProperty("Delay") Long delay;
 

@@ -10,17 +10,17 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
+@AllArgsConstructor(suppressConstructorProperties = true)
 public class Resources {
 
     @Data
     @NoArgsConstructor
-    @AllArgsConstructor
+    @AllArgsConstructor(suppressConstructorProperties = true)
     public static class Network {
 
         @Data
         @NoArgsConstructor
-        @AllArgsConstructor
+        @AllArgsConstructor(suppressConstructorProperties = true)
         public static class DynamicPort {
             @JsonProperty("Value") Integer value;
 
@@ -29,7 +29,7 @@ public class Resources {
 
         @Data
         @NoArgsConstructor
-        @AllArgsConstructor
+        @AllArgsConstructor(suppressConstructorProperties = true)
         public static class ReservedPort {
             @JsonProperty("Value") Integer value;
 
