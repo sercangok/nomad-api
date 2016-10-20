@@ -9,7 +9,7 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
+@AllArgsConstructor(suppressConstructorProperties = true)
 public class NodeEvalResult {
     @JsonProperty("EvalIDs") List<String> evalIDs;
 

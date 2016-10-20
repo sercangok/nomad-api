@@ -9,12 +9,12 @@ import java.util.Map;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
+@AllArgsConstructor(suppressConstructorProperties = true)
 public class Self {
 
     @Data
     @NoArgsConstructor
-    @AllArgsConstructor
+    @AllArgsConstructor(suppressConstructorProperties = true)
     public static class Config {
         @JsonProperty("Region") String region;
 
@@ -32,7 +32,7 @@ public class Self {
 
         @Data
         @NoArgsConstructor
-        @AllArgsConstructor
+        @AllArgsConstructor(suppressConstructorProperties = true)
         public static class Ports {
             @JsonProperty("HTTP") Integer http;
             @JsonProperty("RPC") Integer rpc;
@@ -43,7 +43,7 @@ public class Self {
 
         @Data
         @NoArgsConstructor
-        @AllArgsConstructor
+        @AllArgsConstructor(suppressConstructorProperties = true)
         public static class Addresses {
             @JsonProperty("HTTP") String http;
             @JsonProperty("RPC") String rpc;
@@ -54,7 +54,7 @@ public class Self {
 
         @Data
         @NoArgsConstructor
-        @AllArgsConstructor
+        @AllArgsConstructor(suppressConstructorProperties = true)
         public static class AdvertiseAddrs {
             @JsonProperty("RPC") String rpc;
             @JsonProperty("Serf") String serf;
@@ -64,7 +64,7 @@ public class Self {
 
         @Data
         @NoArgsConstructor
-        @AllArgsConstructor
+        @AllArgsConstructor(suppressConstructorProperties = true)
         public static class Client{
             @JsonProperty("Enabled") Boolean enabled;
             @JsonProperty("StateDir") String stateDir;
@@ -79,7 +79,7 @@ public class Self {
 
         @Data
         @NoArgsConstructor
-        @AllArgsConstructor
+        @AllArgsConstructor(suppressConstructorProperties = true)
         public static class Server {
             @JsonProperty("Enabled") Boolean enabled;
             @JsonProperty("Bootstrap") Boolean bootstrap;
@@ -121,7 +121,7 @@ public class Self {
 
     @Data
     @NoArgsConstructor
-    @AllArgsConstructor
+    @AllArgsConstructor(suppressConstructorProperties = true)
     public static class Member {
         @JsonProperty("Name") String name;
         @JsonProperty("Addr") String addr;
@@ -140,11 +140,11 @@ public class Self {
 
     @Data
     @NoArgsConstructor
-    @AllArgsConstructor
+    @AllArgsConstructor(suppressConstructorProperties = true)
     public static class Stats {
         @Data
         @NoArgsConstructor
-        @AllArgsConstructor
+        @AllArgsConstructor(suppressConstructorProperties = true)
         public static class Client {
             @JsonProperty("heartbeat_ttl") String heartbeat_ttl;
             @JsonProperty("known_servers") String knownServers;
@@ -156,7 +156,7 @@ public class Self {
 
         @Data
         @NoArgsConstructor
-        @AllArgsConstructor
+        @AllArgsConstructor(suppressConstructorProperties = true)
         public static class Nomad {
             @JsonProperty("bootstrap") String bootstrap;
             @JsonProperty("known_regions") String knownRegions;
@@ -168,7 +168,7 @@ public class Self {
 
         @Data
         @NoArgsConstructor
-        @AllArgsConstructor
+        @AllArgsConstructor(suppressConstructorProperties = true)
         public static class Raft {
             @JsonProperty("applied_index") String appliedIndex;
             @JsonProperty("commit_index") String commitIndex;
@@ -187,7 +187,7 @@ public class Self {
 
         @Data
         @NoArgsConstructor
-        @AllArgsConstructor
+        @AllArgsConstructor(suppressConstructorProperties = true)
         public static class Runtime {
             @JsonProperty("arch") String arch;
             @JsonProperty("cpu_count") String cpuCount;
@@ -201,7 +201,7 @@ public class Self {
 
         @Data
         @NoArgsConstructor
-        @AllArgsConstructor
+        @AllArgsConstructor(suppressConstructorProperties = true)
         public static class Serf {
             @JsonProperty("encrypted") String encrypted;
             @JsonProperty("event_queue") String eventQueue;

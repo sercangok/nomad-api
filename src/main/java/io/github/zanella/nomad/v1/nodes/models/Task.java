@@ -16,7 +16,7 @@ public class Task {
 
     @Data
     @NoArgsConstructor
-    @AllArgsConstructor
+    @AllArgsConstructor(suppressConstructorProperties = true)
     public static class Config {
         @JsonProperty("port_map") List<Map<String, Integer>> portMap;
 
@@ -29,7 +29,7 @@ public class Task {
 
     @Data
     @NoArgsConstructor
-    @AllArgsConstructor
+    @AllArgsConstructor(suppressConstructorProperties = true)
     public static class LogConfig {
         @JsonProperty("MaxFiles") Integer maxFiles;
 

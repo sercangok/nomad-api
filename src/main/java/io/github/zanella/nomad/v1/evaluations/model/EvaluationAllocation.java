@@ -9,5 +9,5 @@ import lombok.ToString;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-@AllArgsConstructor
+@AllArgsConstructor(suppressConstructorProperties = true)
 public class EvaluationAllocation extends AllocationSummary {}

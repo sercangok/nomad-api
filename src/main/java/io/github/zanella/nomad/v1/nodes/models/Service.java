@@ -9,12 +9,12 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
+@AllArgsConstructor(suppressConstructorProperties = true)
 public class Service {
 
     @Data
     @NoArgsConstructor
-    @AllArgsConstructor
+    @AllArgsConstructor(suppressConstructorProperties = true)
     public static class Check {
         @JsonProperty("Timeout") Long timeout;
 
