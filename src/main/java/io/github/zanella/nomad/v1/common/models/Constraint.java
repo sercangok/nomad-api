@@ -11,8 +11,8 @@ import lombok.NoArgsConstructor;
 public class Constraint {
     @JsonProperty("Operand") String operand;
 
-    @JsonProperty("RTarget") String rTarget;
+    @JsonProperty("RTarget") String attribute;
 
-    @JsonProperty("LTarget") String lTarget;
+    @JsonProperty("LTarget") String value;
 }
 

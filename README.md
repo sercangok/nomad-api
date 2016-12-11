@@ -16,14 +16,14 @@ nomadClient.v1.<api>.<endpoint>
 ## How to add nomad-api into your project
 ### Gradle
 ```
-compile "io.github.zanella.nomad:nomad-api:0.3"
+compile "io.github.zanella.nomad:nomad-api:0.4-SNAPSHOT"
 ```
 ### Maven
 ```
 <dependency>
   <groupId>io.github.zanella.nomad</groupId>
   <artifactId>nomad-api</artifactId>
-  <version>0.3</version>
+  <version>0.4-SNAPSHOT</version>
 </dependency>
 ```
 

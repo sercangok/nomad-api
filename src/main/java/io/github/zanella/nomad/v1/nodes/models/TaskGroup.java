@@ -27,6 +27,17 @@ public class TaskGroup {
         @JsonProperty("Mode") String mode;
     }
 
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor(suppressConstructorProperties = true)
+    public static class EphemeralDisk {
+        @JsonProperty("Sticky") Boolean sticky;
+
+        @JsonProperty("Migrate") Boolean migrate;
+
+        @JsonProperty("SizeMB") Integer size;
+    }
+
     @JsonProperty("Meta") Map<String, String> meta;
 
     @JsonProperty("Tasks") List<Task> tasks;
@@ -35,7 +46,10 @@ public class TaskGroup {
 
     @JsonProperty("Constraints") List<Constraint> constraints;
 
+    @JsonProperty("EphemeralDisk") EphemeralDisk ephemeralDisk;
+
     @JsonProperty("Count") Integer count;
 
     @JsonProperty("Name") String name;
+
 }

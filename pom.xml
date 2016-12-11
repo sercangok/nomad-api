@@ -4,7 +4,7 @@
     <groupId>io.github.zanella.nomad</groupId>
     <artifactId>nomad-api</artifactId>
     <packaging>jar</packaging>
-    <version>0.3</version>
+    <version>0.4-SNAPSHOT</version>
 
     <name>${project.artifactId}</name>
     <description>Java client for Nomad's HTTP API</description>

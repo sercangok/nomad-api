@@ -119,18 +119,21 @@ public class NodeApiTest extends AbstractCommon {
                     new Resources.Network(
                             ImmutableList.of(new Resources.Network.DynamicPort(20802, "db")), null, 0, "127.0.0.1", "","lo")));
 
-            final Task task = new Task(
-                    null,
-                    commonResources,
-                    null, null, "docker", "redis",
-                    new Task.Config(ImmutableList.of(((Map<String, Integer>) ImmutableMap.of("db", 6379))), "redis:latest", null, null),
-                    ImmutableList.of(new Service(
-                            ImmutableList.of(new Service.Check((long) 2e+09, (long) 1e+10, "", "", "", "tcp", "alive", "")),
-                            "db", ImmutableList.of("global", "cache"), "example-cache-redis", "")),
-                    null);
+            final Task task = Task.builder()
+                .resources(commonResources)
+                .driver("docker")
+                .name("redis")
+                .config(Task.Config.builder()
+                    .portMap(ImmutableList.of(((Map<String, Integer>) ImmutableMap.of("db", 6379))))
+                    .image("redis:latest")
+                .build())
+                .services(ImmutableList.of(new Service(
+                        ImmutableList.of(new Service.Check((long) 2e+09, (long) 1e+10, "", "", "", "tcp", "alive", "")),
+                        "db", ImmutableList.of("global", "cache"), "example-cache-redis", "")))
+            .build();
 
             job.setTaskGroups( ImmutableList.of(new TaskGroup(
-                    null, ImmutableList.of(task), new TaskGroup.RestartPolicy(25000000000L, 300000000000L, 10, "fail"), null, 1, "cache")));
+                    null, ImmutableList.of(task), new TaskGroup.RestartPolicy(25000000000L, 300000000000L, 10, "fail"), null, null, 1, "cache")));
 
             job.setRegion("global");
             job.setAllAtOnce(false);

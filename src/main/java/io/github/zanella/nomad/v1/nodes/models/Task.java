@@ -3,6 +3,7 @@ package io.github.zanella.nomad.v1.nodes.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.zanella.nomad.v1.common.models.Constraint;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,11 +13,13 @@ import java.util.Map;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor(suppressConstructorProperties = true)
+@Builder
 public class Task {
 
     @Data
     @NoArgsConstructor
     @AllArgsConstructor(suppressConstructorProperties = true)
+    @Builder
     public static class Config {
         @JsonProperty("port_map") List<Map<String, Integer>> portMap;
 
@@ -25,6 +28,12 @@ public class Task {
         @JsonProperty("command") String command;
 
         @JsonProperty("args") List<String> args;
+
+        @JsonProperty("volumes") List<String> volumes;
+
+        @JsonProperty("jar_path") String jarPath;
+
+        @JsonProperty("jvm_options") List<String> jvmOptions;
     }
 
     @Data
@@ -34,6 +43,17 @@ public class Task {
         @JsonProperty("MaxFiles") Integer maxFiles;
 
         @JsonProperty("MaxFileSizeMB") Integer maxFileSize;
+    }
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor(suppressConstructorProperties = true)
+    public static class Artifacts {
+        @JsonProperty("GetterSource") String source;
+
+        @JsonProperty("RelativeDest") String destination;
+
+        @JsonProperty("GetterOptions") Map<String, String> options;
     }
 
     @JsonProperty("Meta") Object meta;
@@ -53,4 +73,6 @@ public class Task {
     @JsonProperty("Services") List<Service> services;
 
     @JsonProperty("LogConfig") LogConfig logConfig;
+
+    @JsonProperty("Artifacts") List<Artifacts> artifacts;
 }

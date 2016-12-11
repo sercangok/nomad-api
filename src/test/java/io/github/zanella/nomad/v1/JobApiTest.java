@@ -38,7 +38,10 @@ public class JobApiTest extends AbstractCommon {
                 "        \"Tasks\": [" +
                 "            {" +
                 "                \"Name\": \"binstore\", \"Driver\": \"docker\"," +
-                "                \"Config\": {\"image\": \"hashicorp/binstore\"}," +
+                "                \"Config\": {" +
+                "                    \"image\": \"hashicorp/binstore\"," +
+                "                    \"volumes\": [\"/var/test:/test\"]" +
+                "                }," +
                 "                \"Constraints\": null," +
                 "                \"Resources\": {" +
                 "                    \"CPU\": 500,\"MemoryMB\": 0,\"DiskMB\": 0,\"IOPS\": 0," +
@@ -51,15 +54,26 @@ public class JobApiTest extends AbstractCommon {
                 "            }," +
                 "            {" +
                 "                \"Name\": \"storagelocker\",\"Driver\": \"java\"," +
-                "                \"Config\": {\"image\": \"hashicorp/storagelocker\"}," +
+                "                \"Config\": {" +
+                "                    \"jar_path\": \"local/test.jar\"," +
+                "                    \"jvm_options\": [\"-Xms64m\", \"-Xmx128m\"]" +
+                "                }," +
                 "                \"Constraints\": [" +
                 "                    {\"LTarget\": \"kernel.arch\",\"RTarget\": \"amd64\",\"Operand\": \"=\"}" +
                 "                ]," +
                 "                \"Resources\": {\"CPU\": 500,\"MemoryMB\": 0,\"DiskMB\": 0,\"IOPS\": 0,\"Networks\": null}," +
-                "                \"Meta\": null" +
+                "                \"Meta\": null," +
+                "                \"Artifacts\": [ {" +
+                "                    \"GetterSource\": \"http://localhost/test.jar\"," +
+                "                    \"RelativeDest\": \"local/test\"," +
+                "                    \"GetterOptions\": {" +
+                "                        \"checksum\": \"md5:c4aa853ad2215426eb7d70a21922e794\"" +
+                "                    }" +
+                "                } ]" +
                 "            }" +
                 "        ]," +
-                "        \"Meta\": {\"elb_checks\": \"3\",\"elb_interval\": \"10\",\"elb_mode\": \"tcp\"}" +
+                "        \"Meta\": {\"elb_checks\": \"3\",\"elb_interval\": \"10\",\"elb_mode\": \"tcp\"}," +
+                "        \"EphemeralDisk\": {\"Sticky\": \"true\",\"Migrate\": \"true\",\"SizeMB\": \"300\"}" +
                 "    }" +
                 "]," +
                 "\"Update\": {\"Stagger\": 0,\"MaxParallel\": 0}," +
@@ -91,14 +105,31 @@ public class JobApiTest extends AbstractCommon {
         final TaskGroup taskGroup = new TaskGroup(
                 ImmutableMap.of("elb_checks", "3", "elb_interval", "10", "elb_mode", "tcp"),
                 ImmutableList.of(
-                        new Task(null,
-                                new Resources(500, 0, 0, 0, ImmutableList.of(new Resources.Network(null, null, 100, "", "", ""))),
-                                null, null, "docker", "binstore", new Task.Config(null, "hashicorp/binstore", null, null), null, null),
-                        new Task(null, new Resources(500, 0, 0, 0, null),
-                                ImmutableList.of(new Constraint("=", "amd64", "kernel.arch")), null, "java", "storagelocker",
-                                new Task.Config(null, "hashicorp/storagelocker", null, null), null, null)),
+                        Task.builder()
+                            .name("binstore")
+                            .resources(new Resources(500, 0, 0, 0, ImmutableList.of(new Resources.Network(null, null, 100, "", "", ""))))
+                            .driver("docker")
+                            .config(Task.Config.builder()
+                                .image("hashicorp/binstore")
+                                .volumes(ImmutableList.of("/var/test:/test"))
+                            .build())
+                        .build(),
+                        Task.builder()
+                            .resources(new Resources(500, 0, 0, 0, null))
+                            .constraints(ImmutableList.of(new Constraint("=", "amd64", "kernel.arch")))
+                            .driver("java")
+                            .name("storagelocker")
+                            .config(Task.Config.builder()
+                                .jarPath("local/test.jar")
+                                .jvmOptions(ImmutableList.of("-Xms64m", "-Xmx128m"))
+                            .build())
+                            .artifacts(ImmutableList.of(new Task.Artifacts("http://localhost/test.jar",
+                                    "local/test",
+                                    ImmutableMap.of("checksum", "md5:c4aa853ad2215426eb7d70a21922e794"))))
+                        .build()),
                 null,
                 ImmutableList.of(new Constraint("=", "linux", "kernel.os")),
+                new TaskGroup.EphemeralDisk(true, true, 300),
                 4,
                 "binsl");
 
