@@ -16,7 +16,7 @@ public class NodeInfo extends NodeSummary {
     Resources resources;
 
     @JsonProperty("Reserved")
-    String reserved;
+    Resources reserved;
 
     @JsonProperty("Links")
     Object links; //"Links": {},
