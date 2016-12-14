@@ -1,22 +1,34 @@
 package io.github.zanella.nomad.v1;
 
+import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.put;
+import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+
 import io.github.zanella.nomad.v1.common.models.Constraint;
+import io.github.zanella.nomad.v1.common.models.Job;
 import io.github.zanella.nomad.v1.common.models.TaskState;
 import io.github.zanella.nomad.v1.common.models.UpdateStrategy;
-import io.github.zanella.nomad.v1.nodes.models.NodeDrainEvalResult;
-import io.github.zanella.nomad.v1.common.models.Job;
-import io.github.zanella.nomad.v1.nodes.models.NodeEvalResult;
 import io.github.zanella.nomad.v1.nodes.NodeApi;
-import io.github.zanella.nomad.v1.nodes.models.*;
+import io.github.zanella.nomad.v1.nodes.models.NodeAllocation;
+import io.github.zanella.nomad.v1.nodes.models.NodeDrainEvalResult;
+import io.github.zanella.nomad.v1.nodes.models.NodeEvalResult;
+import io.github.zanella.nomad.v1.nodes.models.NodeInfo;
+import io.github.zanella.nomad.v1.nodes.models.Resources;
+import io.github.zanella.nomad.v1.nodes.models.Service;
+import io.github.zanella.nomad.v1.nodes.models.Task;
+import io.github.zanella.nomad.v1.nodes.models.TaskGroup;
+
 import org.junit.Test;
 
 import java.util.List;
 import java.util.Map;
-
-import static com.github.tomakehurst.wiremock.client.WireMock.*;
-import static org.junit.Assert.*;
 
 public class NodeApiTest extends AbstractCommon {
 
@@ -53,7 +65,7 @@ public class NodeApiTest extends AbstractCommon {
 
         nodeInfo.setAttributes( makeAttributes() );
         nodeInfo.setResources( new Resources(2600, 8192, 34226, 0, null) );
-        nodeInfo.setReserved(null);
+        nodeInfo.setReserved(new Resources(2600, 8192, 34226, 0, null));
         nodeInfo.setLinks( ImmutableMap.builder().build() );
         nodeInfo.setMeta( ImmutableMap.builder().build() );
 
@@ -87,7 +99,8 @@ public class NodeApiTest extends AbstractCommon {
                 "    \"storage.bytestotal\": \"249821659136\", \"storage.volume\": \"/dev/disk1\"" +
                 "}," +
                 "\"Resources\": {\"CPU\": 2600, \"MemoryMB\": 8192, \"DiskMB\": 34226, \"IOPS\": 0, \"Networks\": null}," +
-                "\"Reserved\": null, \"Links\": {}, \"Meta\": {}, \"NodeClass\": \"\", \"Drain\": false," +
+                "\"Reserved\": {\"CPU\": 2600, \"MemoryMB\": 8192, \"DiskMB\": 34226, \"IOPS\": 0, \"Networks\": null}," +
+                "\"Links\": {}, \"Meta\": {}, \"NodeClass\": \"\", \"Drain\": false," +
                 "\"Status\": \"ready\", \"StatusDescription\": \"\", \"CreateIndex\": 3, \"ModifyIndex\": 4" +
                 "}";
 
