@@ -19,7 +19,7 @@ public class NodeInfo extends NodeSummary {
     Resources reserved;
 
     @JsonProperty("Links")
-    Object links; //"Links": {},
+    Map<String, String> links; //"Links": {},
 
     @JsonProperty("Meta")
     Object meta; //"Meta": {},

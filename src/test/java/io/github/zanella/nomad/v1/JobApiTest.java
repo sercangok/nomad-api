@@ -1,7 +1,17 @@
 package io.github.zanella.nomad.v1;
 
+import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.delete;
+import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.put;
+import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+
 import io.github.zanella.nomad.v1.common.models.Constraint;
 import io.github.zanella.nomad.v1.common.models.Job;
 import io.github.zanella.nomad.v1.common.models.UpdateStrategy;
@@ -12,11 +22,8 @@ import io.github.zanella.nomad.v1.jobs.models.JobEvaluation;
 import io.github.zanella.nomad.v1.nodes.models.Resources;
 import io.github.zanella.nomad.v1.nodes.models.Task;
 import io.github.zanella.nomad.v1.nodes.models.TaskGroup;
-import org.junit.Test;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import org.junit.Test;
 
 public class JobApiTest extends AbstractCommon {
     @Test
@@ -165,7 +172,8 @@ public class JobApiTest extends AbstractCommon {
                 "    \"ClientStatus\": \"running\"," +
                 "    \"ClientDescription\": \"\"," +
                 "    \"CreateIndex\": 16," +
-                "    \"ModifyIndex\": 16" +
+                "    \"ModifyIndex\": 16," +
+                "    \"CreateTime\": 1481729010423779645" +
                 "} ]";
 
         stubFor(get(urlEqualTo(JobApi.jobUrl + "/42" + JobApi.allocationsUrl))
@@ -188,6 +196,7 @@ public class JobApiTest extends AbstractCommon {
         expectedJobAllocation.setClientDescription("");
         expectedJobAllocation.setCreateIndex(16);
         expectedJobAllocation.setModifyIndex(16);
+        expectedJobAllocation.setCreateTime(1481729010423779645L);
 
         assertEquals(ImmutableList.of(expectedJobAllocation), nomadClient.v1.job.getJobAllocations("42"));
     }

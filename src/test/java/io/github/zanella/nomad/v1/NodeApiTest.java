@@ -66,7 +66,7 @@ public class NodeApiTest extends AbstractCommon {
         nodeInfo.setAttributes( makeAttributes() );
         nodeInfo.setResources( new Resources(2600, 8192, 34226, 0, null) );
         nodeInfo.setReserved(new Resources(2600, 8192, 34226, 0, null));
-        nodeInfo.setLinks( ImmutableMap.builder().build() );
+        nodeInfo.setLinks( ImmutableMap.of() );
         nodeInfo.setMeta( ImmutableMap.builder().build() );
 
         nodeInfo.setNodeClass("");

@@ -4,7 +4,7 @@
     <groupId>io.github.zanella.nomad</groupId>
     <artifactId>nomad-api</artifactId>
     <packaging>jar</packaging>
-    <version>0.5</version>
+    <version>0.6-SNAPSHOT</version>
 
     <name>${project.artifactId}</name>
     <description>Java client for Nomad's HTTP API</description>
@@ -33,7 +33,7 @@
     </scm>
 
     <properties>
-        <!-- java.version>1.8</java.version -->
+        <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <snippetsDirectory>${project.build.directory}/generated-snippets</snippetsDirectory>
     </properties>
@@ -149,6 +149,16 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.6.0</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                </configuration>
             </plugin>
         </plugins>
     </build>

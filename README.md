@@ -1,4 +1,4 @@
-nomad-api [![Build Status](https://travis-ci.org/zanella/nomad-api.png?branch=master)](https://travis-ci.org//zanella/nomad-api)
+nomad-api [![Build Status](https://travis-ci.org/zanella/nomad-api.png?branch=master)](https://travis-ci.org/zanella/nomad-api)
 ==============================================================================================================
 
 Java client for Nomad's HTTP API (https://www.nomadproject.io)
