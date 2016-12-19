@@ -5,22 +5,26 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.xebia.jacksonlombok.JacksonLombokAnnotationIntrospector;
-import feign.Feign;
-import feign.Logger;
-import feign.jackson.JacksonDecoder;
-import feign.jackson.JacksonEncoder;
+
 import io.github.zanella.nomad.v1.agent.AgentApi;
 import io.github.zanella.nomad.v1.allocations.AllocationApi;
 import io.github.zanella.nomad.v1.allocations.AllocationsApi;
+import io.github.zanella.nomad.v1.client.ClientApi;
 import io.github.zanella.nomad.v1.evaluations.EvaluationApi;
 import io.github.zanella.nomad.v1.evaluations.EvaluationsApi;
 import io.github.zanella.nomad.v1.jobs.JobApi;
-import lombok.Getter;
 import io.github.zanella.nomad.v1.jobs.JobsApi;
 import io.github.zanella.nomad.v1.nodes.NodeApi;
 import io.github.zanella.nomad.v1.nodes.NodesApi;
 import io.github.zanella.nomad.v1.regions.RegionsApi;
 import io.github.zanella.nomad.v1.status.StatusApi;
+
+import lombok.Getter;
+
+import feign.Feign;
+import feign.Logger;
+import feign.jackson.JacksonDecoder;
+import feign.jackson.JacksonEncoder;
 
 public final class V1Client {
     @Getter
@@ -42,6 +46,8 @@ public final class V1Client {
     public final EvaluationApi evaluation;
 
     public final AgentApi agent;
+
+    public final ClientApi client;
 
     public V1Client(String agentHost, int agentPort) {
         this.agentAddress = agentHost + ":" + agentPort;
@@ -75,6 +81,8 @@ public final class V1Client {
         this.evaluation = feignBuilder.target(EvaluationApi.class, agentAddress);
 
         this.agent = feignBuilder.target(AgentApi.class, agentAddress);
+
+        this.client = feignBuilder.target(ClientApi.class, agentAddress);
     }
 
     protected ObjectMapper customObjectMapper() {
