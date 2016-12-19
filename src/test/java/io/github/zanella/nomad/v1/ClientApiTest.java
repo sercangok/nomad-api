@@ -6,14 +6,18 @@ import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static org.junit.Assert.assertEquals;
 
+import com.damnhandy.uri.template.UriTemplate;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 
 import io.github.zanella.nomad.v1.client.ClientApi;
+import io.github.zanella.nomad.v1.client.models.AllocationStats;
 import io.github.zanella.nomad.v1.client.models.Stats;
 
 import org.junit.Test;
 
 public class ClientApiTest extends AbstractCommon {
+
     @Test
     public void getStatsTest() {
         final String rawSelf = "{\n" +
@@ -69,7 +73,7 @@ public class ClientApiTest extends AbstractCommon {
             "  \"Uptime\": 101149\n" +
             "}";
 
-        stubFor(get(urlEqualTo(ClientApi.statsfUrl))
+        stubFor(get(urlEqualTo(ClientApi.statsUrl))
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBody(rawSelf)));
 
         final Stats expectedStats = new Stats(
@@ -89,5 +93,226 @@ public class ClientApiTest extends AbstractCommon {
         );
 
         assertEquals(expectedStats, nomadClient.v1.client.getStats());
+    }
+
+    @Test
+    public void getAllocationStatsTest() {
+        final String rawSelf = "{\n" +
+            "  \"ResourceUsage\": {\n" +
+            "    \"CpuStats\": {\n" +
+            "      \"Measured\": [\n" +
+            "        \"System Mode\",\n" +
+            "        \"User Mode\",\n" +
+            "        \"Percent\"\n" +
+            "      ],\n" +
+            "      \"Percent\": 105.77854560628487,\n" +
+            "      \"SystemMode\": 6.860067935411291,\n" +
+            "      \"ThrottledPeriods\": 0,\n" +
+            "      \"ThrottledTime\": 0,\n" +
+            "      \"TotalTicks\": 714.0051828424228,\n" +
+            "      \"UserMode\": 98.9184820888787\n" +
+            "    },\n" +
+            "    \"MemoryStats\": {\n" +
+            "      \"Cache\": 0,\n" +
+            "      \"KernelMaxUsage\": 0,\n" +
+            "      \"KernelUsage\": 0,\n" +
+            "      \"MaxUsage\": 0,\n" +
+            "      \"Measured\": [\n" +
+            "        \"RSS\",\n" +
+            "        \"Swap\"\n" +
+            "      ],\n" +
+            "      \"RSS\": 14098432,\n" +
+            "      \"Swap\": 0\n" +
+            "    }\n" +
+            "  },\n" +
+            "  \"Tasks\": {\n" +
+            "    \"redis\": {\n" +
+            "      \"Pids\": {\n" +
+            "        \"27072\": {\n" +
+            "          \"CpuStats\": {\n" +
+            "            \"Measured\": [\n" +
+            "              \"System Mode\",\n" +
+            "              \"User Mode\",\n" +
+            "              \"Percent\"\n" +
+            "            ],\n" +
+            "            \"Percent\": 6.8607999603563385,\n" +
+            "            \"SystemMode\": 5.880684245133524,\n" +
+            "            \"ThrottledPeriods\": 0,\n" +
+            "            \"ThrottledTime\": 0,\n" +
+            "            \"TotalTicks\": 0,\n" +
+            "            \"UserMode\": 0.9801144039714172\n" +
+            "          },\n" +
+            "          \"MemoryStats\": {\n" +
+            "            \"Cache\": 0,\n" +
+            "            \"KernelMaxUsage\": 0,\n" +
+            "            \"KernelUsage\": 0,\n" +
+            "            \"MaxUsage\": 0,\n" +
+            "            \"Measured\": [\n" +
+            "              \"RSS\",\n" +
+            "              \"Swap\"\n" +
+            "            ],\n" +
+            "            \"RSS\": 13418496,\n" +
+            "            \"Swap\": 0\n" +
+            "          }\n" +
+            "        },\n" +
+            "        \"27073\": {\n" +
+            "          \"CpuStats\": {\n" +
+            "            \"Measured\": [\n" +
+            "              \"System Mode\",\n" +
+            "              \"User Mode\",\n" +
+            "              \"Percent\"\n" +
+            "            ],\n" +
+            "            \"Percent\": 98.91774564592852,\n" +
+            "            \"SystemMode\": 0.9793836902777665,\n" +
+            "            \"ThrottledPeriods\": 0,\n" +
+            "            \"ThrottledTime\": 0,\n" +
+            "            \"TotalTicks\": 0,\n" +
+            "            \"UserMode\": 97.93836768490729\n" +
+            "          },\n" +
+            "          \"MemoryStats\": {\n" +
+            "            \"Cache\": 0,\n" +
+            "            \"KernelMaxUsage\": 0,\n" +
+            "            \"KernelUsage\": 0,\n" +
+            "            \"MaxUsage\": 0,\n" +
+            "            \"Measured\": [\n" +
+            "              \"RSS\",\n" +
+            "              \"Swap\"\n" +
+            "            ],\n" +
+            "            \"RSS\": 679936,\n" +
+            "            \"Swap\": 0\n" +
+            "          }\n" +
+            "        }\n" +
+            "      },\n" +
+            "      \"ResourceUsage\": {\n" +
+            "        \"CpuStats\": {\n" +
+            "          \"Measured\": [\n" +
+            "            \"System Mode\",\n" +
+            "            \"User Mode\",\n" +
+            "            \"Percent\"\n" +
+            "          ],\n" +
+            "          \"Percent\": 105.77854560628487,\n" +
+            "          \"SystemMode\": 6.860067935411291,\n" +
+            "          \"ThrottledPeriods\": 0,\n" +
+            "          \"ThrottledTime\": 0,\n" +
+            "          \"TotalTicks\": 714.0051828424228,\n" +
+            "          \"UserMode\": 98.9184820888787\n" +
+            "        },\n" +
+            "        \"MemoryStats\": {\n" +
+            "          \"Cache\": 0,\n" +
+            "          \"KernelMaxUsage\": 0,\n" +
+            "          \"KernelUsage\": 0,\n" +
+            "          \"MaxUsage\": 0,\n" +
+            "          \"Measured\": [\n" +
+            "            \"RSS\",\n" +
+            "            \"Swap\"\n" +
+            "          ],\n" +
+            "          \"RSS\": 14098432,\n" +
+            "          \"Swap\": 0\n" +
+            "        }\n" +
+            "      },\n" +
+            "      \"Timestamp\": 1465865820750959600\n" +
+            "    }\n" +
+            "  },\n" +
+            "  \"Timestamp\": 1465865820750959600\n" +
+            "}";
+
+        stubFor(get(urlEqualTo(UriTemplate.fromTemplate(ClientApi.allocationStatsUrl).expand(ImmutableMap.of("allocationId", "allocationId"))))
+            .willReturn(aResponse().withHeader("Content-Type", "application/json").withBody(rawSelf)));
+
+        final AllocationStats expectedStats = new AllocationStats(
+            new AllocationStats.ResourceUsage(
+                new AllocationStats.CpuStats(
+                    ImmutableList.of("System Mode", "User Mode", "Percent"),
+                    105.77854560628487D,
+                    6.860067935411291D,
+                    0L,
+                    0L,
+                    714.0051828424228D,
+                    98.9184820888787D
+                ),
+                new AllocationStats.MemoryStats(
+                    ImmutableList.of("RSS", "Swap"),
+                    0L,
+                    0L,
+                    0L,
+                    0L,
+                    14098432L,
+                    0L
+                )
+            ),
+            ImmutableMap.of(
+                "redis",
+                new AllocationStats.Task(
+                    ImmutableMap.of(
+                        "27072",
+                        new AllocationStats.ResourceUsage(
+                            new AllocationStats.CpuStats(
+                                ImmutableList.of("System Mode", "User Mode", "Percent"),
+                                6.8607999603563385D,
+                                5.880684245133524D,
+                                0L,
+                                0L,
+                                0D,
+                                0.9801144039714172D
+                            ),
+                            new AllocationStats.MemoryStats(
+                                ImmutableList.of("RSS", "Swap"),
+                                0L,
+                                0L,
+                                0L,
+                                0L,
+                                13418496L,
+                                0L
+                            )
+                        ),
+                        "27073",
+                        new AllocationStats.ResourceUsage(
+                            new AllocationStats.CpuStats(
+                                ImmutableList.of("System Mode", "User Mode", "Percent"),
+                                98.91774564592852D,
+                                0.9793836902777665D,
+                                0L,
+                                0L,
+                                0D,
+                                97.93836768490729D
+                            ),
+                            new AllocationStats.MemoryStats(
+                                ImmutableList.of("RSS", "Swap"),
+                                0L,
+                                0L,
+                                0L,
+                                0L,
+                                679936L,
+                                0L
+                            )
+                        )
+                    ),
+                    new AllocationStats.ResourceUsage(
+                        new AllocationStats.CpuStats(
+                            ImmutableList.of("System Mode", "User Mode", "Percent"),
+                            105.77854560628487D,
+                            6.860067935411291D,
+                            0L,
+                            0L,
+                            714.0051828424228D,
+                            98.9184820888787D
+                        ),
+                        new AllocationStats.MemoryStats(
+                            ImmutableList.of("RSS", "Swap"),
+                            0L,
+                            0L,
+                            0L,
+                            0L,
+                            14098432L,
+                            0L
+                        )
+                    ),
+                    1465865820750959600L
+                )
+            ),
+            1465865820750959600L
+        );
+
+        assertEquals(expectedStats, nomadClient.v1.client.getAllocationStats("allocationId"));
     }
 }
