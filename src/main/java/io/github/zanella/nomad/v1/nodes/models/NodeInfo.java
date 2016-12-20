@@ -9,20 +9,20 @@ import java.util.Map;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 public class NodeInfo extends NodeSummary {
-    @JsonProperty("Attributes")
-    Map<String, String> attributes;
 
-    @JsonProperty("Resources")
-    Resources resources;
+    @JsonProperty("HTTPAddr") String httpAddr;
 
-    @JsonProperty("Reserved")
-    Resources reserved;
+    @JsonProperty("TLSEnabled") boolean tlsEnabled;
 
-    @JsonProperty("Links")
-    Map<String, String> links; //"Links": {},
+    @JsonProperty("Attributes") Map<String, String> attributes;
 
-    @JsonProperty("Meta")
-    Object meta; //"Meta": {},
+    @JsonProperty("Resources") Resources resources;
+
+    @JsonProperty("Reserved") Resources reserved;
+
+    @JsonProperty("Links") Map<String, String> links;
+
+    @JsonProperty("Meta") Object meta;
 
     public String superToString() { return super.toString(); }
 

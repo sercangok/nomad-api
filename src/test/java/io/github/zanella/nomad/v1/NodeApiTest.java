@@ -63,6 +63,8 @@ public class NodeApiTest extends AbstractCommon {
         nodeInfo.setId("c9972143-861d-46e6-df73-1d8287bc3e66");
         nodeInfo.setDatacenter("dc1");
         nodeInfo.setName("Armons-MacBook-Air.local");
+        nodeInfo.setHttpAddr("127.0.0.1:4646");
+        nodeInfo.setTlsEnabled(false);
 
         nodeInfo.setAttributes( makeAttributes() );
         nodeInfo.setResources( new Resources(2600, 8192, 34226, 0, null) );
@@ -87,6 +89,8 @@ public class NodeApiTest extends AbstractCommon {
         final String rawNodeSummary = "{" +
                 "\"ID\": \"c9972143-861d-46e6-df73-1d8287bc3e66\", \"Datacenter\": \"dc1\"," +
                 "\"Name\": \"Armons-MacBook-Air.local\"," +
+                "\"HTTPAddr\": \"127.0.0.1:4646\"," +
+                "\"TLSEnabled\": false, " +
                 "\"Attributes\": {" +
                 "    \"arch\": \"amd64\", \"cpu.frequency\": \"1300.000000\"," +
                 "    \"cpu.modelname\": \"Intel(R) Core(TM) i5-4250U CPU @ 1.30GHz\",\"cpu.numcores\": \"2\"," +
