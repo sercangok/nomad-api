@@ -1,9 +1,9 @@
 package io.github.zanella.nomad.v1.status;
 
+import java.util.List;
+
 import feign.Param;
 import feign.RequestLine;
-
-import java.util.List;
 
 public interface StatusApi {
     String leaderUrl = "/v1/status/leader";
@@ -11,8 +11,10 @@ public interface StatusApi {
     @RequestLine("GET " + leaderUrl)
     String getLeader();
 
-    @RequestLine("GET " + leaderUrl + "?region={region}")
-    String getLeaderOfRegion(@Param("region") String region);
+    String leaderForRegionUrl = leaderUrl + "?region={region}";
+
+    @RequestLine("GET " + leaderForRegionUrl)
+    String getLeaderForRegion(@Param("region") String region);
 
     String peersUrl = "/v1/status/peers";
 

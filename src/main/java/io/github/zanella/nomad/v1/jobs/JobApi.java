@@ -1,7 +1,5 @@
 package io.github.zanella.nomad.v1.jobs;
 
-import feign.Param;
-import feign.RequestLine;
 import io.github.zanella.nomad.v1.common.models.Job;
 import io.github.zanella.nomad.v1.jobs.models.JobAllocation;
 import io.github.zanella.nomad.v1.jobs.models.JobEvalResult;
@@ -9,27 +7,30 @@ import io.github.zanella.nomad.v1.jobs.models.JobEvaluation;
 
 import java.util.List;
 
-public interface JobApi {
-    String jobUrl = "/v1/job";
+import feign.Param;
+import feign.RequestLine;
 
-    @RequestLine("GET " + jobUrl + "/{jobId}")
+public interface JobApi {
+    String jobUrl = "/v1/job/{jobId}";
+
+    @RequestLine("GET " + jobUrl)
     Job getJob(@Param("jobId") String jobId);
 
-    String allocationsUrl = "/allocations";
+    String jobAllocationsUrl = jobUrl + "/allocations";
 
-    @RequestLine("GET " + jobUrl + "/{jobId}" + allocationsUrl)
+    @RequestLine("GET " + jobAllocationsUrl)
     List<JobAllocation> getJobAllocations(@Param("jobId") String jobId);
 
-    String evaluationsUrl = "/evaluations";
+    String jobEvaluationsUrl = jobUrl + "/evaluations";
 
-    @RequestLine("GET " + jobUrl + "/{jobId}" + evaluationsUrl)
+    @RequestLine("GET " + jobEvaluationsUrl)
     List<JobEvaluation> getJobEvaluations(@Param("jobId") String jobId);
 
-    String jobEvaluateUrl = "/evaluate";
+    String jobEvaluateUrl = jobUrl + "/evaluate";
 
-    @RequestLine("PUT " + jobUrl + "/{jobId}" + jobEvaluateUrl)
+    @RequestLine("PUT " + jobEvaluateUrl)
     JobEvalResult putJobEvaluate(@Param("jobId") String jobId);
 
-    @RequestLine("DELETE " + jobUrl + "/{jobId}")
+    @RequestLine("DELETE " + jobUrl)
     JobEvalResult deleteJob(@Param("jobId") String jobId);
 }

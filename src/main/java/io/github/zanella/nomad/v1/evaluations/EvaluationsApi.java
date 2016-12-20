@@ -1,10 +1,11 @@
 package io.github.zanella.nomad.v1.evaluations;
 
-import feign.Param;
-import feign.RequestLine;
 import io.github.zanella.nomad.v1.jobs.models.JobEvaluation;
 
 import java.util.List;
+
+import feign.Param;
+import feign.RequestLine;
 
 public interface EvaluationsApi {
     String evaluationsUrl = "/v1/evaluations";
@@ -12,6 +13,8 @@ public interface EvaluationsApi {
     @RequestLine("GET " + evaluationsUrl)
     List<JobEvaluation> getEvaluations();
 
-    @RequestLine("GET " + evaluationsUrl + "?region={region}")
-    List<JobEvaluation> getEvaluationsOfRegion(@Param("region") String region);
+    String evaluationsForRegionUrl = evaluationsUrl + "?region={region}";
+
+    @RequestLine("GET " + evaluationsForRegionUrl)
+    List<JobEvaluation> getEvaluationsForRegion(@Param("region") String region);
 }

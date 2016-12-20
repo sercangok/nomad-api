@@ -1,33 +1,38 @@
 package io.github.zanella.nomad.v1.nodes;
 
-import feign.Param;
-import feign.RequestLine;
+import io.github.zanella.nomad.v1.nodes.models.NodeAllocation;
 import io.github.zanella.nomad.v1.nodes.models.NodeDrainEvalResult;
 import io.github.zanella.nomad.v1.nodes.models.NodeEvalResult;
-import io.github.zanella.nomad.v1.nodes.models.NodeAllocation;
 import io.github.zanella.nomad.v1.nodes.models.NodeInfo;
 
 import java.util.List;
 
-public interface NodeApi {
-    String nodeUrl = "/v1/node";
+import feign.Param;
+import feign.RequestLine;
 
-    @RequestLine("GET " + nodeUrl + "/{nodeId}")
+public interface NodeApi {
+    String nodeUrl = "/v1/node/{nodeId}";
+
+    @RequestLine("GET " + nodeUrl)
     NodeInfo getNode(@Param("nodeId") String nodeId);
 
-    @RequestLine("GET " + nodeUrl + "/{nodeId}?region={region}")
-    NodeInfo getNodeForRegion(@Param("nodeId") String nodeId, @Param("region") String region);
+    String nodeOfRegionUrl = "/v1/node/{nodeId}?region={region}";
 
-    String allocationsUrl = "/allocations";
+    @RequestLine("GET " + nodeOfRegionUrl)
+    NodeInfo getNodeOfRegion(@Param("nodeId") String nodeId, @Param("region") String region);
 
-    @RequestLine("GET " + nodeUrl + "/{nodeId}" + allocationsUrl)
+    String allocationsUrl = nodeUrl + "/allocations";
+
+    @RequestLine("GET " + allocationsUrl)
     List<NodeAllocation> getNodeAllocations(@Param("nodeId") String nodeId);
 
-    String evaluateUrl = "/evaluate";
-    @RequestLine("PUT " + nodeUrl + "/{nodeId}" + evaluateUrl)
+    String evaluateUrl = nodeUrl + "/evaluate";
+
+    @RequestLine("PUT " + evaluateUrl)
     NodeEvalResult putEvaluate(@Param("nodeId") String nodeId);
 
-    String drainUrl = "/drain";
-    @RequestLine("PUT " + nodeUrl + "/{nodeId}" + drainUrl + "?enable={enableSwitch}")
+    String drainUrl = nodeUrl + "/drain?enable={enableSwitch}";
+
+    @RequestLine("PUT " + drainUrl)
     NodeDrainEvalResult putDrain(@Param("nodeId") String nodeId, @Param("enableSwitch") Boolean enableSwitch);
 }

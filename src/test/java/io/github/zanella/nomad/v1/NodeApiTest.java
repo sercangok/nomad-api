@@ -8,6 +8,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
+import com.damnhandy.uri.template.UriTemplate;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 
@@ -104,14 +105,14 @@ public class NodeApiTest extends AbstractCommon {
                 "\"Status\": \"ready\", \"StatusDescription\": \"\", \"CreateIndex\": 3, \"ModifyIndex\": 4" +
                 "}";
 
-        stubFor(get(urlEqualTo(NodeApi.nodeUrl + "/42"))
+        stubFor(get(urlEqualTo(UriTemplate.fromTemplate(NodeApi.nodeUrl).expand(ImmutableMap.of("nodeId", "nodeId"))))
                         .willReturn(aResponse().withHeader("Content-Type", "application/json").withBody(rawNodeSummary))
         );
 
-        assertEquals(expectedNodeInfo, nomadClient.v1.node.getNode("42"));
+        assertEquals(expectedNodeInfo, nomadClient.v1.node.getNode("nodeId"));
     }
 
-    public static NodeAllocation createNodeallocation() {
+    public static NodeAllocation createNodeAllocation() {
         final Job job = new Job();
         final Resources commonResources;
 
@@ -272,13 +273,13 @@ public class NodeApiTest extends AbstractCommon {
                 "  \"CreateIndex\": 7" +
                 "} ]";
 
-        stubFor(get(urlEqualTo(NodeApi.nodeUrl + "/42" + NodeApi.allocationsUrl))
+        stubFor(get(urlEqualTo(UriTemplate.fromTemplate(NodeApi.allocationsUrl).expand(ImmutableMap.of("nodeId", "nodeId"))))
                         .willReturn(aResponse().withHeader("Content-Type", "application/json").withBody(rawNodeAllocation))
         );
 
-        final NodeAllocation expectedNodeAllocation = createNodeallocation();
+        final NodeAllocation expectedNodeAllocation = createNodeAllocation();
 
-        final List<NodeAllocation> actualNodeAllocations = nomadClient.v1.node.getNodeAllocations("42");
+        final List<NodeAllocation> actualNodeAllocations = nomadClient.v1.node.getNodeAllocations("nodeId");
 
         final List<NodeAllocation> expectedNodeAllocationList = ImmutableList.of(expectedNodeAllocation);
 
@@ -307,12 +308,12 @@ public class NodeApiTest extends AbstractCommon {
                 "\"EvalCreateIndex\": 35, \"NodeModifyIndex\": 34" +
                 "}";
 
-        stubFor(put(urlEqualTo(NodeApi.nodeUrl + "/42" + NodeApi.evaluateUrl))
+        stubFor(put(urlEqualTo(UriTemplate.fromTemplate(NodeApi.evaluateUrl).expand(ImmutableMap.of("nodeId", "nodeId"))))
                         .willReturn(aResponse().withHeader("Content-Type", "application/json").withBody(rawEvaluate))
         );
 
         assertEquals(new NodeEvalResult(ImmutableList.of("d092fdc0-e1fd-2536-67d8-43af8ca798ac"), 35, 34),
-                nomadClient.v1.node.putEvaluate("42"));
+                nomadClient.v1.node.putEvaluate("nodeId"));
     }
 
     @Test
@@ -322,11 +323,11 @@ public class NodeApiTest extends AbstractCommon {
                 "\"EvalCreateIndex\": 35, \"NodeModifyIndex\": 34" +
                 "}";
 
-        stubFor(put(urlEqualTo(NodeApi.nodeUrl + "/42" + NodeApi.drainUrl + "?enable=true"))
+        stubFor(put(urlEqualTo(UriTemplate.fromTemplate(NodeApi.drainUrl).expand(ImmutableMap.of("nodeId", "nodeId", "enableSwitch", true))))
                         .willReturn(aResponse().withHeader("Content-Type", "application/json").withBody(rawEvaluate))
         );
 
         assertEquals(new NodeDrainEvalResult("d092fdc0-e1fd-2536-67d8-43af8ca798ac", 35, 34),
-                nomadClient.v1.node.putDrain("42", true));
+                nomadClient.v1.node.putDrain("nodeId", true));
     }
 }

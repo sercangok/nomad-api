@@ -7,40 +7,41 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
-import java.util.List;
+import com.damnhandy.uri.template.UriTemplate;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 
 import io.github.zanella.nomad.v1.allocations.models.Allocation;
 import io.github.zanella.nomad.v1.evaluations.EvaluationApi;
 import io.github.zanella.nomad.v1.evaluations.model.EvaluationAllocation;
+import io.github.zanella.nomad.v1.jobs.models.JobEvaluation;
+
 import org.junit.Test;
 
-import com.google.common.collect.ImmutableList;
-
-import io.github.zanella.nomad.v1.evaluations.EvaluationsApi;
-import io.github.zanella.nomad.v1.jobs.models.JobEvaluation;
+import java.util.List;
 
 public class EvaluationApiTest extends AbstractCommon {
     @Test
     public void getEvaluationTest() {
         final String rawEvaluation = "{" +
-                "    \"ID\": \"151accaa-1ac6-90fe-d427-313e70ccbb88\"," +
-                "    \"Priority\": 50," +
-                "    \"Type\": \"service\"," +
-                "    \"TriggeredBy\": \"job-register\"," +
-                "    \"JobID\": \"binstore-storagelocker\"," +
-                "    \"JobModifyIndex\": 14," +
-                "    \"NodeID\": \"\"," +
-                "    \"NodeModifyIndex\": 0," +
-                "    \"Status\": \"complete\"," +
-                "    \"StatusDescription\": \"\"," +
-                "    \"Wait\": 0," +
-                "    \"NextEval\": \"\"," +
-                "    \"PreviousEval\": \"\"," +
-                "    \"CreateIndex\": 15," +
-                "    \"ModifyIndex\": 17" +
-                "}";
+            "    \"ID\": \"151accaa-1ac6-90fe-d427-313e70ccbb88\"," +
+            "    \"Priority\": 50," +
+            "    \"Type\": \"service\"," +
+            "    \"TriggeredBy\": \"job-register\"," +
+            "    \"JobID\": \"binstore-storagelocker\"," +
+            "    \"JobModifyIndex\": 14," +
+            "    \"NodeID\": \"\"," +
+            "    \"NodeModifyIndex\": 0," +
+            "    \"Status\": \"complete\"," +
+            "    \"StatusDescription\": \"\"," +
+            "    \"Wait\": 0," +
+            "    \"NextEval\": \"\"," +
+            "    \"PreviousEval\": \"\"," +
+            "    \"CreateIndex\": 15," +
+            "    \"ModifyIndex\": 17" +
+            "}";
 
-        stubFor(get(urlEqualTo(String.format("%s/151accaa-1ac6-90fe-d427-313e70ccbb88", EvaluationApi.evaluationUrl)))
+        stubFor(get(urlEqualTo(UriTemplate.fromTemplate(EvaluationApi.evaluationUrl).expand(ImmutableMap.of("evaluationId", "evaluationId"))))
                 .willReturn(aResponse()
                         .withHeader("Content-Type", "application/json")
                         .withBody(rawEvaluation))
@@ -63,7 +64,7 @@ public class EvaluationApiTest extends AbstractCommon {
                 15,
                 2);
 
-        final JobEvaluation actualEvaluation = nomadClient.v1.evaluation.getEvaluation("151accaa-1ac6-90fe-d427-313e70ccbb88");
+        final JobEvaluation actualEvaluation = nomadClient.v1.evaluation.getEvaluation("evaluationId");
 
         assertNotEquals(expectedEvaluation, actualEvaluation);
 
@@ -89,7 +90,7 @@ public class EvaluationApiTest extends AbstractCommon {
                 "    \"ModifyIndex\": 16\n" +
                 "}]";
 
-        stubFor(get(urlEqualTo(String.format("%s/3575ba9d-7a12-0c96-7b28-add168c67984/allocations", EvaluationApi.evaluationUrl)))
+        stubFor(get(urlEqualTo(UriTemplate.fromTemplate(EvaluationApi.evaluationAllocationsUrl).expand(ImmutableMap.of("evaluationId", "evaluationId"))))
                 .willReturn(aResponse()
                         .withHeader("Content-Type", "application/json")
                         .withBody(rawEvaluationAllocations))
@@ -110,7 +111,7 @@ public class EvaluationApiTest extends AbstractCommon {
         expectedAllocation.setModifyIndex(16);
 
         final List<Allocation> expectedAllocationList = ImmutableList.of(expectedAllocation);
-        final List<EvaluationAllocation> actualAllocationsList = nomadClient.v1.evaluation.getEvaluationAllocations("3575ba9d-7a12-0c96-7b28-add168c67984");
+        final List<EvaluationAllocation> actualAllocationsList = nomadClient.v1.evaluation.getEvaluationAllocations("evaluationId");
 
         assertNotEquals(expectedAllocationList, actualAllocationsList);
     }

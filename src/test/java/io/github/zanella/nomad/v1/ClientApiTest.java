@@ -11,10 +11,13 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 
 import io.github.zanella.nomad.v1.client.ClientApi;
+import io.github.zanella.nomad.v1.client.models.AllocationFile;
 import io.github.zanella.nomad.v1.client.models.AllocationStats;
 import io.github.zanella.nomad.v1.client.models.Stats;
 
 import org.junit.Test;
+
+import java.util.List;
 
 public class ClientApiTest extends AbstractCommon {
 
@@ -314,5 +317,55 @@ public class ClientApiTest extends AbstractCommon {
         );
 
         assertEquals(expectedStats, nomadClient.v1.client.getAllocationStats("allocationId"));
+    }
+
+    @Test
+    public void getFileListTest() {
+        final String rawSelf = "[\n" +
+            "  {\n" +
+            "    \"Name\": \"alloc\",\n" +
+            "    \"IsDir\": true,\n" +
+            "    \"Size\": 4096,\n" +
+            "    \"FileMode\": \"drwxrwxr-x\",\n" +
+            "    \"ModTime\": \"2016-03-15T15:40:00.414236712-07:00\"\n" +
+            "  },\n" +
+            "  {\n" +
+            "    \"Name\": \"redis\",\n" +
+            "    \"IsDir\": true,\n" +
+            "    \"Size\": 4096,\n" +
+            "    \"FileMode\": \"drwxrwxr-x\",\n" +
+            "    \"ModTime\": \"2016-03-15T15:40:56.810238153-07:00\"\n" +
+            "  }\n" +
+            "]";
+
+        stubFor(get(urlEqualTo(UriTemplate.fromTemplate(ClientApi.allocationFileListUrl).expand(ImmutableMap.of("allocationId", "allocationId", "path", "/"))))
+            .willReturn(aResponse().withHeader("Content-Type", "application/json").withBody(rawSelf)));
+
+        final List<AllocationFile> expected =
+            ImmutableList.of(
+                new AllocationFile("alloc", true, 4096L, "drwxrwxr-x", "2016-03-15T15:40:00.414236712-07:00"),
+                new AllocationFile("redis", true, 4096L, "drwxrwxr-x", "2016-03-15T15:40:56.810238153-07:00")
+            );
+
+        assertEquals(expected, nomadClient.v1.client.getAllocationFileList("allocationId", "/"));
+    }
+
+    @Test
+    public void getFileStatsTest() {
+        final String rawSelf = "{\n" +
+            "  \"Name\": \"redis-syslog-collector.out\",\n" +
+            "  \"IsDir\": false,\n" +
+            "  \"Size\": 96,\n" +
+            "  \"FileMode\": \"-rw-rw-r--\",\n" +
+            "  \"ModTime\": \"2016-03-15T15:40:56.822238153-07:00\"\n" +
+            "}";
+
+        stubFor(get(urlEqualTo(UriTemplate.fromTemplate(ClientApi.allocationFileStatsUrl).expand(ImmutableMap.of("allocationId", "allocationId", "path", "/"))))
+            .willReturn(aResponse().withHeader("Content-Type", "application/json").withBody(rawSelf)));
+
+        final AllocationFile expected =
+            new AllocationFile("redis-syslog-collector.out", false, 96L, "-rw-rw-r--", "2016-03-15T15:40:56.822238153-07:00");
+
+        assertEquals(expected, nomadClient.v1.client.getAllocationFileStats("allocationId", "/"));
     }
 }

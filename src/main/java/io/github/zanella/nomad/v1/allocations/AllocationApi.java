@@ -1,15 +1,18 @@
 package io.github.zanella.nomad.v1.allocations;
 
-import feign.Param;
-import feign.RequestLine;
 import io.github.zanella.nomad.v1.nodes.models.NodeAllocation;
 
-public interface AllocationApi {
-    String allocationUrl = "/v1/allocation";
+import feign.Param;
+import feign.RequestLine;
 
-    @RequestLine("GET " + allocationUrl + "/{allocationId}")
+public interface AllocationApi {
+    String allocationUrl = "/v1/allocation/{allocationId}";
+
+    @RequestLine("GET " + allocationUrl)
     NodeAllocation getAllocation(@Param("allocationId") String allocationId);
 
-    @RequestLine("GET " + allocationUrl + "/{allocationId}" + "?region={region}")
+    String allocationForRegionUrl = "/v1/allocation/{allocationId}?region={region}";
+
+    @RequestLine("GET " + allocationForRegionUrl)
     NodeAllocation getAllocationForRegion(@Param("allocationId") String allocationId, @Param("region") String region);
 }

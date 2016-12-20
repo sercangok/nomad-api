@@ -9,6 +9,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
+import com.damnhandy.uri.template.UriTemplate;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 
@@ -91,7 +92,7 @@ public class JobApiTest extends AbstractCommon {
                 "\"ModifyIndex\": 14" +
                 "}";
 
-        stubFor(get(urlEqualTo(JobApi.jobUrl + "/42"))
+        stubFor(get(urlEqualTo(UriTemplate.fromTemplate(JobApi.jobUrl).expand(ImmutableMap.of("jobId", "jobId"))))
                         .willReturn(aResponse()
                                         .withHeader("Content-Type", "application/json")
                                         .withBody(rawJobResponse.replace("'", "\""))
@@ -149,7 +150,7 @@ public class JobApiTest extends AbstractCommon {
         expectedJob.setCreateIndex(14);
         expectedJob.setModifyIndex(14);
 
-        final Job actualJobResult = nomadClient.v1.job.getJob("42");
+        final Job actualJobResult = nomadClient.v1.job.getJob("jobId");
 
         assertNotEquals(expectedJob, actualJobResult);
 
@@ -176,7 +177,7 @@ public class JobApiTest extends AbstractCommon {
                 "    \"CreateTime\": 1481729010423779645" +
                 "} ]";
 
-        stubFor(get(urlEqualTo(JobApi.jobUrl + "/42" + JobApi.allocationsUrl))
+        stubFor(get(urlEqualTo(UriTemplate.fromTemplate(JobApi.jobAllocationsUrl).expand(ImmutableMap.of("jobId", "jobId"))))
                         .willReturn(aResponse()
                                         .withHeader("Content-Type", "application/json")
                                         .withBody(rawJobAllocations.replace("'", "\""))
@@ -198,7 +199,7 @@ public class JobApiTest extends AbstractCommon {
         expectedJobAllocation.setModifyIndex(16);
         expectedJobAllocation.setCreateTime(1481729010423779645L);
 
-        assertEquals(ImmutableList.of(expectedJobAllocation), nomadClient.v1.job.getJobAllocations("42"));
+        assertEquals(ImmutableList.of(expectedJobAllocation), nomadClient.v1.job.getJobAllocations("jobId"));
     }
 
     @Test
@@ -221,7 +222,7 @@ public class JobApiTest extends AbstractCommon {
                 "    \"ModifyIndex\": 17" +
                 "} ]";
 
-        stubFor(get(urlEqualTo(JobApi.jobUrl + "/42" + JobApi.evaluationsUrl))
+        stubFor(get(urlEqualTo(UriTemplate.fromTemplate(JobApi.jobEvaluationsUrl).expand(ImmutableMap.of("jobId", "jobId"))))
                         .willReturn(aResponse()
                                         .withHeader("Content-Type", "application/json")
                                         .withBody(rawJobEvaluations.replace("'", "\""))));
@@ -229,7 +230,7 @@ public class JobApiTest extends AbstractCommon {
         final JobEvaluation expectedJobEvaluation = new JobEvaluation("151accaa-1ac6-90fe-d427-313e70ccbb88", 50,
                 "service", "job-register", "binstore-storagelocker", 14, "", 0, "complete", "", 0, "", "", 15, 17);
 
-        assertEquals(ImmutableList.of(expectedJobEvaluation), nomadClient.v1.job.getJobEvaluations("42"));
+        assertEquals(ImmutableList.of(expectedJobEvaluation), nomadClient.v1.job.getJobEvaluations("jobId"));
     }
 
     @Test
@@ -238,13 +239,13 @@ public class JobApiTest extends AbstractCommon {
                 "\"EvalCreateIndex\": 35,\"JobModifyIndex\": 34, \"Index\": 348, \"LastContact\": 0,\n" +
                 "\"KnownLeader\": false\n }";
 
-        stubFor(put(urlEqualTo(JobApi.jobUrl + "/42" + JobApi.jobEvaluateUrl))
+        stubFor(put(urlEqualTo(UriTemplate.fromTemplate(JobApi.jobEvaluateUrl).expand(ImmutableMap.of("jobId", "jobId"))))
                 .willReturn(aResponse()
                         .withHeader("Content-Type", "application/json")
                         .withBody(rawEval.replace("'", "\""))));
 
         assertEquals(new JobEvalResult("d092fdc0-e1fd-2536-67d8-43af8ca798ac", 35, 34, 348, 0, false),
-                nomadClient.v1.job.putJobEvaluate("42"));
+                nomadClient.v1.job.putJobEvaluate("jobId"));
     }
 
     @Test
@@ -253,12 +254,12 @@ public class JobApiTest extends AbstractCommon {
                 "\"EvalCreateIndex\": 35,\"JobModifyIndex\": 34, \"Index\": 348, \"LastContact\": 0,\n" +
                 "\"KnownLeader\": false\n }";
 
-        stubFor(delete(urlEqualTo(JobApi.jobUrl + "/42"))
+        stubFor(delete(urlEqualTo(UriTemplate.fromTemplate(JobApi.jobUrl).expand(ImmutableMap.of("jobId", "jobId"))))
                 .willReturn(aResponse()
                         .withHeader("Content-Type", "application/json")
                         .withBody(rawEval.replace("'", "\""))));
 
         assertEquals(new JobEvalResult("d092fdc0-e1fd-2536-67d8-43af8ca798ac", 35, 34, 348, 0, false),
-                nomadClient.v1.job.deleteJob("42"));
+                nomadClient.v1.job.deleteJob("jobId"));
     }
 }
