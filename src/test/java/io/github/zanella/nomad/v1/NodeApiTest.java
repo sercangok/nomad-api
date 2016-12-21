@@ -189,8 +189,8 @@ public class NodeApiTest extends AbstractCommon {
         expectedNodeAllocation.setTaskStates(
                 ImmutableMap.of("redis",
                         new TaskState(
-                                ImmutableList.of(new TaskState.Event("", "", 0, 0, "", 1447806038427841000L, "Started")),
-                                "running")));
+                                ImmutableList.of(new TaskState.Event("", "", 0L, "", 0, 0, "", 1447806038427841000L, "Started", false, "", "", "", "")),
+                                "running", false)));
         expectedNodeAllocation.setCreateIndex(7);
 
         return expectedNodeAllocation;
@@ -267,11 +267,26 @@ public class NodeApiTest extends AbstractCommon {
                 "  \"ClientDescription\": \"\"," +
                 "  \"TaskStates\": {" +
                 "    \"redis\": {" +
-                "      \"Events\": [ {" +
-                "          \"KillError\": \"\", \"Message\": \"\", \"Signal\": 0, \"ExitCode\": 0," +
-                "          \"DriverError\": \"\", \"Time\": 1447806038427841000, \"Type\": \"Started\"" +
-                "        } ]," +
-                "      \"State\": \"running\"" +
+                "      \"Events\": [\n" +
+                "        {\n" +
+                "          \"KillError\": \"\",\n" +
+                "          \"KillReason\": \"\",\n" +
+                "          \"KillTimeout\": 0,\n" +
+                "          \"Message\": \"\",\n" +
+                "          \"Signal\": 0,\n" +
+                "          \"ExitCode\": 0,\n" +
+                "          \"DriverError\": \"\",\n" +
+                "          \"Time\": 1447806038427841000,\n" +
+                "          \"Type\": \"Started\",\n" +
+                "          \"FailsTask\": false,\n" +
+                "          \"TaskSignalReason\": \"\",\n" +
+                "          \"TaskSignal\": \"\",\n" +
+                "          \"ValidationError\": \"\",\n" +
+                "          \"DownloadError\": \"\"\n" +
+                "        }\n" +
+                "      ],\n" +
+                "      \"State\": \"running\"," +
+                "      \"Failed\": false" +
                 "    }" +
                 "  }," +
                 "  \"CreateIndex\": 7" +
