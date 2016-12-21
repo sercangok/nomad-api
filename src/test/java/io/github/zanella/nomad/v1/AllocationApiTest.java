@@ -14,6 +14,7 @@ import io.github.zanella.nomad.v1.allocations.AllocationApi;
 import org.junit.Test;
 
 public class AllocationApiTest extends AbstractCommon {
+
     private static final String rawAllocation = "{" +
         "  \"ID\": \"203266e5-e0d6-9486-5e05-397ed2b184af\"," +
         "  \"EvalID\": \"e68125ed-3fba-fb46-46cc-291addbc4455\"," +
@@ -158,15 +159,23 @@ public class AllocationApiTest extends AbstractCommon {
         "      \"Events\": [\n" +
         "        {\n" +
         "          \"KillError\": \"\",\n" +
+        "          \"KillReason\": \"\",\n" +
+        "          \"KillTimeout\": 0,\n" +
         "          \"Message\": \"\",\n" +
         "          \"Signal\": 0,\n" +
         "          \"ExitCode\": 0,\n" +
         "          \"DriverError\": \"\",\n" +
         "          \"Time\": 1447806038427841000,\n" +
-        "          \"Type\": \"Started\"\n" +
+        "          \"Type\": \"Started\",\n" +
+        "          \"FailsTask\": false,\n" +
+        "          \"TaskSignalReason\": \"\",\n" +
+        "          \"TaskSignal\": \"\",\n" +
+        "          \"ValidationError\": \"\",\n" +
+        "          \"DownloadError\": \"\"\n" +
         "        }\n" +
         "      ],\n" +
-        "      \"State\": \"running\"" +
+        "      \"State\": \"running\"," +
+        "      \"Failed\": false" +
         "    }" +
         "  }," +
         "  \"CreateIndex\": 7" +

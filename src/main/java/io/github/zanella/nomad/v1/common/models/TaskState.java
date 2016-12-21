@@ -18,6 +18,10 @@ public class TaskState {
     public static class Event {
         @JsonProperty("KillError") String killError;
 
+        @JsonProperty("KillReason") String killReason;
+
+        @JsonProperty("KillTimeout") Long killTimeout;
+
         @JsonProperty("Message") String message;
 
         @JsonProperty("Signal") Integer signal;
@@ -29,9 +33,21 @@ public class TaskState {
         @JsonProperty("Time") Long time;
 
         @JsonProperty("Type") String type;
+
+        @JsonProperty("FailsTask") boolean failsTask;
+
+        @JsonProperty("TaskSignalReason") String taskSignalReason;
+
+        @JsonProperty("TaskSignal") String taskSignal;
+
+        @JsonProperty("ValidationError") String validationError;
+
+        @JsonProperty("DownloadError") String downloadError;
     }
 
     @JsonProperty("Events") List<Event> events;
 
     @JsonProperty("State") String state;
+
+    @JsonProperty("Failed") boolean failed;
 }
