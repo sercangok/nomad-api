@@ -1,6 +1,10 @@
 package io.github.zanella.nomad;
 
 import io.github.zanella.nomad.v1.V1Client;
+import io.github.zanella.nomad.v1.nodes.models.NodeInfo;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class NomadClient {
     public final V1Client v1;
@@ -23,5 +27,18 @@ public class NomadClient {
         }
 
         v1 = new V1Client(agentHostWithScheme, agentPort);
+    }
+
+    public NomadClient node(String nodeId) {
+        NodeInfo node = v1.node.getNode(nodeId);
+        if (node != null) {
+            Pattern pattern = Pattern.compile("\\s*(.*?):(\\d+)\\s*");
+            Matcher matcher = pattern.matcher(node.getHttpAddr());
+            if (matcher.matches()) {
+                return new NomadClient(matcher.group(1), Integer.parseInt(matcher.group(2)));
+            }
+        }
+
+        return this;
     }
 }

@@ -29,4 +29,15 @@ public interface ClientApi {
 
     @RequestLine("GET " + allocationFileStatsUrl)
     AllocationFile getAllocationFileStats(@Param("allocationId") String allocationId, @Param("path") String path);
+
+    String allocationFileContentUrl = "/v1/client/fs/cat/{allocationId}?path={path}";
+
+    @RequestLine("GET " + allocationFileContentUrl)
+    byte[] getAllocationFileContent(@Param("allocationId") String allocationId, @Param("path") String path);
+
+    String allocationFileContentOffsetUrl = "/v1/client/fs/readat/{allocationId}?path={path}&offset={offset}&limit={limit}";
+
+    @RequestLine("GET " + allocationFileContentOffsetUrl)
+    byte[] getAllocationFileContent(@Param("allocationId") String allocationId, @Param("path") String path,
+                                    @Param("offset") int offset, @Param("limit") int limit);
 }

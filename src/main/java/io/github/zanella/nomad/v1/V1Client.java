@@ -21,8 +21,12 @@ import io.github.zanella.nomad.v1.status.StatusApi;
 
 import lombok.Getter;
 
+import java.io.IOException;
+import java.lang.reflect.Type;
+
 import feign.Feign;
 import feign.Logger;
+import feign.Response;
 import feign.jackson.JacksonDecoder;
 import feign.jackson.JacksonEncoder;
 
@@ -55,7 +59,7 @@ public final class V1Client {
         final ObjectMapper objectMapper = customObjectMapper();
 
         final Feign.Builder feignBuilder = Feign.builder()
-                .decoder(new JacksonDecoder(objectMapper))
+                .decoder(new JacksonDecoderExtended(objectMapper))
                 .encoder(new JacksonEncoder(objectMapper))
                 .logger(new Logger.ErrorLogger());
                 //.logLevel(Logger.Level.FULL)
@@ -91,5 +95,22 @@ public final class V1Client {
                 .setSerializationInclusion(JsonInclude.Include.NON_NULL)
                 .configure(SerializationFeature.WRAP_ROOT_VALUE, true)
                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    }
+
+    static class JacksonDecoderExtended extends JacksonDecoder {
+
+        public JacksonDecoderExtended(ObjectMapper mapper) {
+            super(mapper);
+        }
+
+        @Override
+        public Object decode(final Response response, final Type type) throws IOException {
+            if (response.headers().get("Content-Type").stream()
+                .anyMatch(header -> header.contains("application/json"))) {
+                return super.decode(response, type);
+            } else {
+                return new feign.codec.Decoder.Default().decode(response, type);
+            }
+        }
     }
 }
