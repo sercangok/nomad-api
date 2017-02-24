@@ -97,7 +97,7 @@ public final class V1Client {
                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
-    static class JacksonDecoderExtended extends JacksonDecoder {
+    private final class JacksonDecoderExtended extends JacksonDecoder {
 
         public JacksonDecoderExtended(ObjectMapper mapper) {
             super(mapper);

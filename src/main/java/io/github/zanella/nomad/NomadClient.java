@@ -10,6 +10,9 @@ public class NomadClient {
     public final V1Client v1;
 
     private static final String DEFAULT_HOST = "localhost";
+
+    private static final Pattern HOST_PATTERN = Pattern.compile("\\s*(.*?):(\\d+)\\s*");
+
     public static final int DEFAULT_PORT = 4646;
 
     public NomadClient() { this(DEFAULT_HOST); }
@@ -30,10 +33,9 @@ public class NomadClient {
     }
 
     public NomadClient node(String nodeId) {
-        NodeInfo node = v1.node.getNode(nodeId);
+        final NodeInfo node = v1.node.getNode(nodeId);
         if (node != null) {
-            Pattern pattern = Pattern.compile("\\s*(.*?):(\\d+)\\s*");
-            Matcher matcher = pattern.matcher(node.getHttpAddr());
+            final Matcher matcher = HOST_PATTERN.matcher(node.getHttpAddr());
             if (matcher.matches()) {
                 return new NomadClient(matcher.group(1), Integer.parseInt(matcher.group(2)));
             }
