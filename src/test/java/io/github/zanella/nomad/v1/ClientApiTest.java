@@ -5,6 +5,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 
 import com.damnhandy.uri.template.UriTemplate;
 import com.google.common.collect.ImmutableList;
@@ -15,6 +16,7 @@ import io.github.zanella.nomad.v1.client.models.AllocationFile;
 import io.github.zanella.nomad.v1.client.models.AllocationStats;
 import io.github.zanella.nomad.v1.client.models.Stats;
 
+import org.hamcrest.core.IsEqual;
 import org.junit.Test;
 
 import java.util.List;
@@ -367,5 +369,26 @@ public class ClientApiTest extends AbstractCommon {
             new AllocationFile("redis-syslog-collector.out", false, 96L, "-rw-rw-r--", "2016-03-15T15:40:56.822238153-07:00");
 
         assertEquals(expected, nomadClient.v1.client.getAllocationFileStats("allocationId", "/"));
+    }
+
+    @Test
+    public void getAllocationFileContentTest() {
+        final byte[] rawSelf = "test".getBytes();
+
+        stubFor(get(urlEqualTo(UriTemplate.fromTemplate(ClientApi.allocationFileContentUrl).expand(ImmutableMap.of("allocationId", "allocationId", "path", "/"))))
+            .willReturn(aResponse().withHeader("Content-Type", "text/plain").withBody(rawSelf)));
+
+        assertThat(rawSelf, IsEqual.equalTo(nomadClient.v1.client.getAllocationFileContent("allocationId", "/")));
+    }
+
+    @Test
+    public void getAllocationFileContentOffsetTest() {
+        final byte[] rawSelf = "test".getBytes();
+
+        stubFor(get(urlEqualTo(UriTemplate.fromTemplate(ClientApi.allocationFileContentOffsetUrl).expand(ImmutableMap.of("allocationId", "allocationId", "path", "/",
+            "offset", 10, "limit", 10))))
+            .willReturn(aResponse().withHeader("Content-Type", "text/plain").withBody(rawSelf)));
+
+        assertThat(rawSelf, IsEqual.equalTo(nomadClient.v1.client.getAllocationFileContent("allocationId", "/", 10, 10)));
     }
 }
