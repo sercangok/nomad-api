@@ -20,6 +20,16 @@ public class Task {
     @NoArgsConstructor
     @AllArgsConstructor(suppressConstructorProperties = true)
     @Builder
+    public static class Templates {
+        @JsonProperty("SourcePath") String source;
+        @JsonProperty("DestPath") String destination;
+        @JsonProperty("ChangeMode") String changeMode;
+    }
+    
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor(suppressConstructorProperties = true)
+    @Builder
     public static class Config {
         @JsonProperty("port_map") List<Map<String, Integer>> portMap;
 
@@ -55,7 +65,9 @@ public class Task {
 
         @JsonProperty("GetterOptions") Map<String, String> options;
     }
-
+    
+    @JsonProperty("Templates") List<Templates> templates;
+    
     @JsonProperty("Meta") Object meta;
     
     @JsonProperty("Resources") Resources resources;
