@@ -33,4 +33,12 @@ public interface JobApi {
 
     @RequestLine("DELETE " + jobUrl)
     JobEvalResult deleteJob(@Param("jobId") String jobId);
+    
+	@RequestLine("POST " + jobUrl)
+	JobEvalResult postJob(@Param("jobId") String jobId, Job expectedJob);
+        
+	String jobPlanUrl = jobUrl + "/plan";
+    
+	@RequestLine("POST " + jobUrl + "/plan")
+	Response postPlanJob(@Param("jobId") String jobId, Job expectedJob);
 }
