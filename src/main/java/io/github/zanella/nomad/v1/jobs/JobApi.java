@@ -7,6 +7,7 @@ import io.github.zanella.nomad.v1.jobs.models.JobEvaluation;
 
 import java.util.List;
 
+import feign.Response;
 import feign.Param;
 import feign.RequestLine;
 
