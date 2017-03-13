@@ -14,16 +14,23 @@ nomadClient.v1.<api>.<endpoint>
 
 
 ## How to add nomad-api into your project
+
+### Repo
+```
+maven { url 'https://dl.bintray.com/sercangok/maven'}
+```
+
 ### Gradle
 ```
-compile "io.github.zanella.nomad:nomad-api:0.8"
+compile 'com.dev.sgok.zanella.nomad:nomad-api:1.0.1'
 ```
 ### Maven
 ```
 <dependency>
-  <groupId>io.github.zanella.nomad</groupId>
+  <groupId>com.dev.sgok.zanella.nomad</groupId>
   <artifactId>nomad-api</artifactId>
-  <version>0.8</version>
+  <version>1.0.1</version>
+  <type>pom</type>
 </dependency>
 ```
 
